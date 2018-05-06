@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.cqut.llj.po.Girl;
-import edu.cqut.llj.po.GirlRepository;
+import edu.cqut.llj.repository.GirlRepository;
 
 @Service
 public class GirlService {

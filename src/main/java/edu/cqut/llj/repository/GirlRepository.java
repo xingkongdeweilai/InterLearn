@@ -1,8 +1,10 @@
-package edu.cqut.llj.po;
+package edu.cqut.llj.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import edu.cqut.llj.po.Girl;
 
 public interface GirlRepository extends JpaRepository<Girl, Integer>{
 	

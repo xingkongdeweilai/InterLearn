@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.cqut.llj.po.Girl;
-import edu.cqut.llj.po.GirlRepository;
+import edu.cqut.llj.repository.GirlRepository;
 import edu.cqut.llj.service.GirlService;
 
 @RestController
