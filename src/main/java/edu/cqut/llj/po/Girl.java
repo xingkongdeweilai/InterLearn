@@ -3,6 +3,7 @@ package edu.cqut.llj.po;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 
 @Entity
 public class Girl {
@@ -10,6 +11,7 @@ public class Girl {
 	@GeneratedValue
 	private Integer id;
 	private String cupSize;
+	@Min(value=18,message="未成年少女禁止入门")
 	private Integer age;
 	public Girl() {
 	}
@@ -30,5 +32,9 @@ public class Girl {
 	}
 	public void setAge(Integer age) {
 		this.age = age;
+	}
+	@Override
+	public String toString() {
+		return "Girl [id=" + id + ", cupSize=" + cupSize + ", age=" + age + "]";
 	}
 }

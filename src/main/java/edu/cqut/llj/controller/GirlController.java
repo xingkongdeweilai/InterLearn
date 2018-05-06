@@ -2,7 +2,10 @@ package edu.cqut.llj.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,12 +44,13 @@ public class GirlController {
 	 * @return
 	 */
 	@PostMapping("/add")
-	public Girl girlAdd(@RequestParam("cupSize") String cupSize,
-							@RequestParam("age") Integer age){
-		Girl girl = new Girl();
-		girl.setCupSize(cupSize);
-		girl.setAge(age);
-		
+	public Girl girlAdd(@Valid Girl girl,BindingResult bindingResult){
+		if(bindingResult.hasErrors()){
+			System.out.println(bindingResult.getFieldError().getDefaultMessage());
+			return null;
+		}
+//		girl.setCupSize(girl.getCupSize());
+//		girl.setAge(girl.getAge());
 		return girlRepository.save(girl);
 	}
 	

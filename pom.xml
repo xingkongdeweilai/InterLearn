@@ -55,6 +55,12 @@
 	   <!--  <version>5.1.46</version> -->
 	</dependency>
 
+	<!-- aop -->
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-aop</artifactId>
+	    <!-- <version>1.1.11.RELEASE</version> -->
+	</dependency>
 
   	
   </dependencies>
