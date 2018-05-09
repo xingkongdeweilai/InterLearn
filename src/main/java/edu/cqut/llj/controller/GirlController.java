@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.cqut.llj.po.Girl;
 import edu.cqut.llj.repository.GirlRepository;
 import edu.cqut.llj.service.GirlService;
+import edu.cqut.llj.utils.ResultUtil;
+import edu.cqut.llj.vo.Result;
 
 @RestController
 @RequestMapping("/girls")
@@ -27,6 +31,7 @@ public class GirlController {
 	private GirlRepository girlRepository;
 	@Autowired
 	private GirlService girlsevice;
+	private final static Logger LOGGER = LoggerFactory.getLogger(GirlController.class);
 	
 	/**
 	 * 查询所有女生列表
@@ -43,15 +48,15 @@ public class GirlController {
 	 * @param age
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@PostMapping("/add")
-	public Girl girlAdd(@Valid Girl girl,BindingResult bindingResult){
+	public Result<Girl> girlAdd(@Valid Girl girl,BindingResult bindingResult){
 		if(bindingResult.hasErrors()){
-			System.out.println(bindingResult.getFieldError().getDefaultMessage());
-			return null;
+			return ResultUtil.error(1, bindingResult.getFieldError().getDefaultMessage());
 		}
 //		girl.setCupSize(girl.getCupSize());
 //		girl.setAge(girl.getAge());
-		return girlRepository.save(girl);
+		return ResultUtil.success(girlRepository.save(girl));
 	}
 	
 	//查询一个女生
@@ -85,8 +90,14 @@ public class GirlController {
 		return girlRepository.findByAge(age);
 	}
 	
+	//同时增加两个（事务）
 	@PostMapping("/addTwo")
 	public void addTwo(){
 		girlsevice.insertTwo();
+	}
+	
+	@GetMapping("/getAge/{id}")
+	public void getAge(@PathVariable("id") Integer id){
+		girlsevice.getAge(id);
 	}
 }
