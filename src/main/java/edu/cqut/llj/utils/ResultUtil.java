@@ -1,13 +1,14 @@
 package edu.cqut.llj.utils;
 
+import edu.cqut.llj.enums.ResultEnum;
 import edu.cqut.llj.vo.Result;
 
 public class ResultUtil {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Result success(Object object){
 		Result result = new Result();
-		result.setCode(0);
-		result.setMsg("成功");
+		result.setCode(ResultEnum.SUCCESS.getCode());
+		result.setMsg(ResultEnum.SUCCESS.getMsg());
 		result.setData(object);
 		return result;
 	}

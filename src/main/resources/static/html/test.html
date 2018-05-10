@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title></title>
+	</head>
+	<body>
+		<form id="myForm" class="layui-form" action="" method="post">
+			<input type="button" value="测试" id="myButton"/>
+		</form>
+		<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$('#myButton').click(function(){
+				alert();
+				$.ajax({
+					type:"post",
+					url:"/interLearn/user/test.do"
+				});
+			});
+			
+		</script>
+		
+	</body>
+</html>

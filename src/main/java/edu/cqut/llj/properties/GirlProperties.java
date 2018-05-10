@@ -1,4 +1,4 @@
-package edu.cqut.llj.vo;
+package edu.cqut.llj.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import edu.cqut.llj.vo.GirlProperties;
-
 @Controller
 @ResponseBody
 @RequestMapping({"/hello","/hi"})

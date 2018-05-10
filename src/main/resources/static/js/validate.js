@@ -1,3 +1,7 @@
+/**
+ * 注册页面验证
+ */
+
 // user
 var username_Boolean = false;
 var password_Boolean = false;
@@ -64,9 +68,33 @@ $('.reg_telephone').blur(function(){
 
 // click
 $('.regester').click(function(){
-  if(username_Boolean && password_Boolean && rePassword_Boolean && eMail_Boolean && telephone_Boolean){
-    alert("注册成功");
-  }else {
-    alert("请完善信息");
-  }
+  
 });
+
+function doSubmit(){
+	if(username_Boolean && password_Boolean && rePassword_Boolean && eMail_Boolean && telephone_Boolean){
+		var obj = {};
+		obj.username=$('[name="username"]').val().trim();
+		obj.password=$('[name="password"]').val().trim();
+		obj.sex=$('[name="sex"]').val().trim();
+		obj.mobile=$('[name="mobile"]').val().trim();
+		obj.eMail=$('[name="eMail"]').val().trim();
+		obj.birthDay=$('[name="birthDay"]').val().trim();
+		console.log(obj);
+		/*$.post('127.0.0.1:8081/interLearn/user/addUser.do',obj,function(result){
+			alert("success!");
+			console.log(result);
+		});*/
+		$.ajax({
+			type:"post",
+			url:"/interLearn/user/addUser.do",
+			data:obj,
+			success:function(data){
+				console.log(data);
+				$(location).attr('href', 'http://127.0.0.1:8081/interLearn/html/login.html');
+			}
+		});
+	}else {
+	    alert("请完善信息");
+	}
+}
