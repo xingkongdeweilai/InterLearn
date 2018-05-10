@@ -24,11 +24,11 @@
 						<form action="#" name="f" method="post">
 							<div class="input_outer">
 								<span class="u_user"></span>
-								<input name="username" class="text" placeholder="请输入用户名" style="color: #FFFFFF !important" type="text" />
+								<input name="username" class="text" placeholder="请输入用户名" style="color: #FFFFFF !important" type="text" value="" th:value="${user.username}"/>
 							</div>
 							<div class="input_outer">
 								<span class="us_uer"></span>
-								<input name="password" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"value="" type="password" placeholder="请输入密码" />
+								<input name="password" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;" value="" type="password" placeholder="请输入密码" />
 							</div>
 							<div class="input_outer">
 								<input id="J_codetext" name="identifyCode" class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入验证码" />
@@ -37,7 +37,7 @@
 								</canvas>
 							</div>
 							<div class="mb2"><a class="act-but submit" href="javascript:;" style="color: #FFFFFF" onclick="validate()">　　　 登录</a></div>
-							<div class="mb2"><a class="act-but submit" href="regester.html" style="color: #FFFFFF">没有账号？注册一个</a></div>
+							<div class="mb2"><a class="act-but submit" href="../user/regester.do" style="color: #FFFFFF">没有账号？注册一个</a></div>
 						</form>
 					</div>
 				</div>
