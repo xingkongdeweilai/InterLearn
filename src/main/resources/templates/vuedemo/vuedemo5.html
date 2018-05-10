@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>TodoList</title>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="root">
+			<div>
+				<input v-model="inputValue"/>
+				<button>提交</button>
+			</div>
+			<ul>
+				<li>1</li>
+				<li>2</li>
+			</ul>
+		</div>
+		
+		<script type="text/javascript">
+			new Vue({
+				el:"#root",
+				data:{
+					inputValue:"hello"
+				}
+			})
+		</script>
+	</body>
+</html>
