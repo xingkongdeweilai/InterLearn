@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * 用户实体类
  * @author LLJ
@@ -25,11 +28,13 @@ public class User {
 	private String username;
 	@NotNull
 	private String password;
+	@JsonInclude(Include.NON_NULL)
 	private Integer sex;
 	@Column(unique=true)
 	private String mobile;
 	@Column(unique=true)
 	private String eMail;
+	@JsonInclude(Include.NON_NULL)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date birthDay;
 	/**

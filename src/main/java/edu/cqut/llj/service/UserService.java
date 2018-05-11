@@ -15,5 +15,9 @@ public class UserService {
 	public User addUser(User user){
 		return userDao.addUser(user);
 	}
+
+	public User queryUserByLogin(String username,String password) {
+		return userDao.queryUserByLogin(username,password);
+	}
 	
 }

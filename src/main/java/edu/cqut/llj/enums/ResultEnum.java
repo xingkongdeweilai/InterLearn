@@ -7,6 +7,8 @@ public enum ResultEnum {
 	MIDDLE_SCHOOL(101,"你可能还在上初中"),
 	USER_REGISTER(102,"用户注册失败"),
 	USER_NULL(103,"获取用户实例为空"),
+	LOGIN_NULL(104,"登录账号或密码为空"),
+	LOGIN_ERROR(105,"账号或密码错误"),
 	
 	SUPER_ADMIN(0,"超级管理员"),
 	ADMIN(1,"管理员"),

@@ -10,12 +10,13 @@
 <!--必要样式-->
 <link rel="stylesheet" type="text/css" href="../css/component.css" />
 <link rel="stylesheet" type="text/css" href="../css/identifyCode.css"/>
+<!-- <script src="../js/vue.js"></script> -->
 <!--[if IE]>
 <script src="js/html5.js"></script>
 <![endif]-->
 </head>
 <body>
-		<div class="container demo-1">
+		<div class="container demo-1" id="root">
 			<div class="content">
 				<div id="large-header" class="large-header">
 					<canvas id="demo-canvas"></canvas>
@@ -24,7 +25,7 @@
 						<form action="#" name="f" method="post">
 							<div class="input_outer">
 								<span class="u_user"></span>
-								<input name="username" class="text" placeholder="请输入用户名" style="color: #FFFFFF !important" type="text" value="" th:value="${user.username}"/>
+								<input name="username" class="text" placeholder="请输入用户名/手机号码/邮箱" style="color: #FFFFFF !important" type="text" value="" />
 							</div>
 							<div class="input_outer">
 								<span class="us_uer"></span>
@@ -36,8 +37,10 @@
 									Your browser does not support the canvas element.
 								</canvas>
 							</div>
-							<div class="mb2"><a class="act-but submit" href="javascript:;" style="color: #FFFFFF" onclick="validate()">　　　 登录</a></div>
-							<div class="mb2"><a class="act-but submit" href="../user/regester.do" style="color: #FFFFFF">没有账号？注册一个</a></div>
+							<div class="mb2"><a class="act-but submit" href="javascript:verifyLogin();" style="color: #FFFFFF">　　　 登录</a></div>
+							<div class="mb2"><a class="act-but submit" href="../user/regester" style="color: #FFFFFF">没有账号？注册一个</a></div>
+							<!-- <div><span th:if="${error.code==105}">用户名或密码错误</span>aaa</div> -->
+							<div id="error" style="color:red"></div>
 						</form>
 					</div>
 				</div>
@@ -49,6 +52,19 @@
 		<script src="../js/demo-1.js"></script>
 		<script src="../js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/identifyCode.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			function getUsername(){
+				var url = decodeURI(location.search);
+				if(url.indexOf("username=")==-1){
+					return;
+				}
+				var username = url.slice(url.search(/\=/)+1);
+				$("[name='username']").val(username);
+			}
+			$(document).ready(function(){
+				getUsername();
+			});
+		</script>
 		<div style="text-align:center;">
 </div>
 	</body>

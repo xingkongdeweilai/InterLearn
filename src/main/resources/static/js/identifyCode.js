@@ -1,5 +1,6 @@
 /*-----------------------------------------------------------------------------
 * @Description: 验证码 
+* 验证登录
 * ---------------------------------------------------------------------------*/
 function showCheck(a){/* 显示验证码图片 */
 	var c = document.getElementById("myCanvas");
@@ -28,29 +29,58 @@ function createCode(){
     showCheck(code);
 }
           
-
+/**
+ * 登录前验证验证码
+ * @returns {Boolean}
+ */
 function validate () {
     var inputCode = document.getElementById("J_codetext").value.toUpperCase();
     var codeToUp=code.toUpperCase();
     if(inputCode.length <=0) {
       document.getElementById("J_codetext").setAttribute("placeholder","请重新输入验证码");
       createCode();
-      alert("验证码错误");
+      alert("验证码错误!");
       return false;
     }
     else if(inputCode != codeToUp ){
       document.getElementById("J_codetext").value="";
-      document.getElementById("J_codetext").setAttribute("placeholder","Error");
+      document.getElementById("J_codetext").setAttribute("placeholder","请重新输入验证码");
       createCode();
-      alert("验证码错误");
+      alert("验证码错误!");
       return false;
     }
     else {
       createCode();
-      alert("验证码正确");
       return true;
     }
+}
 
+/**
+ * 验证登录
+ */
+function verifyLogin(){
+	if(validate()){
+		var result = false;
+		var obj = {};
+		obj.username=$('[name="username"]').val().trim();
+		obj.password=$('[name="password"]').val().trim();
+		$.ajax({
+			type:"post",
+			url:"/interLearn/user/verifyLogin",
+			data:obj,
+			success:function(){
+				alert("成功？");
+				result = true;
+				$(location).attr('href', encodeURI('http://127.0.0.1:8081/interLearn/html/index.html'));
+			},
+			error:function(){
+				alert("qingqiushibai");
+			}
+		});
+		/*if(!result){
+			$('#error').html('用户名或密码错误！');
+		}*/
+	}
 }
 
 // download

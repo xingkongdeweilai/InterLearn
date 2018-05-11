@@ -76,10 +76,10 @@ function doSubmit(){
 		var obj = {};
 		obj.username=$('[name="username"]').val().trim();
 		obj.password=$('[name="password"]').val().trim();
-		obj.sex=$('[name="sex"]').val().trim();
+		obj.sex=$("input[name='sex']:checked").val();
 		obj.mobile=$('[name="mobile"]').val().trim();
 		obj.eMail=$('[name="eMail"]').val().trim();
-		obj.birthDay=$('[name="birthDay"]').val().trim();
+		obj.birthDay=$('[name="birthDay"]').val();
 		console.log(obj);
 		/*$.post('127.0.0.1:8081/interLearn/user/addUser.do',obj,function(result){
 			alert("success!");
@@ -87,11 +87,11 @@ function doSubmit(){
 		});*/
 		$.ajax({
 			type:"post",
-			url:"/interLearn/user/addUser.do",
+			url:"/interLearn/user/addUser",
 			data:obj,
 			success:function(data){
-				console.log(data);
 				alert("注册成功，可以登录了");
+				$(location).attr('href', encodeURI('http://127.0.0.1:8081/interLearn/user/login?username='+data.data.username));
 			}
 		});
 	}else {
