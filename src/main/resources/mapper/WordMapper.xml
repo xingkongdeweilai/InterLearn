@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cqut.llj.mapper.WordMapper">
+  <resultMap id="WordResultMap" type="edu.cqut.llj.pojo.Word">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="word_id" jdbcType="INTEGER" property="wordId" />
+    <result column="word_describe" jdbcType="VARCHAR" property="wordDescribe" />
+    <result column="word_translate" jdbcType="VARCHAR" property="wordTranslate" />
+    <result column="wordname" jdbcType="VARCHAR" property="wordname" />
+  </resultMap>
+  <resultMap id="WordExampleResultMap" type="edu.cqut.llj.pojo.WordExample" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="word_example_cn" property="wordExampleCn" jdbcType="VARCHAR" />
+    <result column="word_example_en" property="wordExampleEn" jdbcType="VARCHAR" />
+    <result column="word_id" property="wordId" jdbcType="INTEGER" />
+  </resultMap>
+  <!-- parameterType="java.lang.Integer"  -->
+	<select id="test" resultType="edu.cqut.llj.vo.WordAndWordExample"> 
+		select a.word_id,a.word_describe,a.word_translate,a.wordname,b.word_example_cn,b.word_example_en
+		from word a join word_example b on a.word_id=b.word_id
+	</select>
+</mapper>

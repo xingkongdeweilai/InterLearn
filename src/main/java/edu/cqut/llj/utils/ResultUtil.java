@@ -10,6 +10,7 @@ public class ResultUtil {
 		result.setCode(ResultEnum.SUCCESS.getCode());
 		result.setMsg(ResultEnum.SUCCESS.getMsg());
 		result.setData(object);
+		result.setCount(1000);
 		return result;
 	}
 	
@@ -23,6 +24,7 @@ public class ResultUtil {
 		Result result = new Result();
 		result.setCode(code);
 		result.setMsg(msg);
+		result.setCount(-1);
 		return result;
 	}
 }

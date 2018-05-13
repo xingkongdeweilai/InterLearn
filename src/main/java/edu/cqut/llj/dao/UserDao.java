@@ -28,6 +28,7 @@ public class UserDao {
 	 * @return
 	 */
 	public User queryUserByLogin(String username,String password) {
+		//分别根据姓名、电话号码及邮箱查询
 		User resultUser1 = userRepository.findByUsername(username);
 		User resultUser2 = userRepository.findByMobile(username);
 		User resultUser3 = userRepository.findByeMail(username);
@@ -41,6 +42,7 @@ public class UserDao {
 		}else{
 			return null;
 		}
+		//验证密码
 		if(password!=null&&password.equals(resultUser.getPassword())){
 			return resultUser;
 		}

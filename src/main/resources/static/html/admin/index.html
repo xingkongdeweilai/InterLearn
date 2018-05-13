@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>星空英语管理系统</title>
+
+<link rel="stylesheet" href="../css/mdui.css" />
+<link rel="stylesheet" href="../css/app.css" />
+<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div id="root">
+<header>
+	<a class="backprev" href="javascript:history.back(-1);">
+		<i class="mdui-icon material-icons">&#xe314;</i>
+	</a>
+	<div class="head-middle">欢迎使用星空英语管理系统</div>
+	<div class="head-right">
+		<button class="mdui-btn app-btn" mdui-drawer="{target: '#left-drawer'}"><i class="mdui-icon material-icons">&#xe5d3;</i></button>
+		<div class="mdui-drawer mdui-drawer-right mdui-drawer-close" id="left-drawer">
+
+			<ul class="mdui-list app-slide-menu app-collapse-menu" mdui-collapse="{accordion: true}">
+			   <li class="mdui-list-item mdui-ripple app-list-home ">
+				   <a href="#" class="app-list-item-link mdui-text-left ">
+					   <div class="mdui-list-item-content">
+							<i class="mdui-list-item-icon mdui-icon material-icons">
+						   &#xe88a;
+						   </i>首页
+					   </div>
+				   </a>
+			   </li>
+				<li class="mdui-collapse-item  app-hide-list  app-collapse-list" v-if="show">
+					<div class="mdui-collapse-item-header mdui-list-item mdui-ripple  mdui-p-x-0">
+						<div class="menu-click mdui-list-item-content mdui-text-left" onClick="">
+							管理员管理
+							<i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-float-right">
+								&#xe5cc;
+							</i>
+						</div>
+					</div>
+					<ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+						<li class="mdui-list-item mdui-ripple app-sub-list  app-hide-list">
+							<a href="#" class="app-list-item-link mdui-text-left">
+								二级栏目
+							</a>
+						</li>
+						<li class="mdui-list-item mdui-ripple app-sub-list  app-hide-list">
+							<a href="#" class="app-list-item-link mdui-text-left">
+								二级栏目
+							</a>
+						</li>
+					</ul>
+				</li>
+				<li class="mdui-collapse-item  app-hide-list  app-collapse-list">
+					<div class="mdui-collapse-item-header mdui-list-item mdui-ripple  mdui-p-x-0">
+						<div class="menu-click mdui-list-item-content mdui-text-left" onClick="">
+							单词管理
+							<i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-float-right">
+								&#xe5cc;
+							</i>
+						</div>
+					</div>
+					<ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+						<li class="mdui-list-item mdui-ripple app-sub-list  app-hide-list">
+							<a href="javascript:toWordList();" class="app-list-item-link mdui-text-left">
+								单词列表
+							</a>
+						</li>
+						<li class="mdui-list-item mdui-ripple app-sub-list  app-hide-list">
+							<a href="#" class="app-list-item-link mdui-text-left">
+								描述管理
+							</a>
+						</li>
+						<li class="mdui-list-item mdui-ripple app-sub-list  app-hide-list">
+							<a href="#" class="app-list-item-link mdui-text-left">
+								翻译管理
+							</a>
+						</li>
+						<li class="mdui-list-item mdui-ripple app-sub-list  app-hide-list">
+							<a href="#" class="app-list-item-link mdui-text-left">
+								二级栏目
+							</a>
+						</li>
+					</ul>
+				</li>
+				<li class="mdui-collapse-item app-hide-list  app-collapse-list">
+				   <a href="#" class=" mdui-list-item mdui-ripple  mdui-p-x-0">
+						<div class="menu-click mdui-list-item-content mdui-text-left">
+							一级栏目 
+							<i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-float-right">
+								&#xe5cc;
+							</i>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div> 
+</header>
+</div>
+
+<script src="../js/mdui.js"></script>
+<div style="text-align:center;">
+	<iframe name="wordList" src="" frameborder="0" height="580px" width="1100px" scrolling="no"/>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+	new Vue({
+		el:"#root",
+		computed:{
+			show:function(){
+				return 0 == [[${loginInfo.role}]];
+			}
+		}
+	});
+	function toWordList(){
+		$('iframe').attr("src","../word/toWordList");
+	}
+</script>
+
+</body>
+</html>

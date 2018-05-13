@@ -11,6 +11,7 @@ public class Result<T> {
 	private Integer code;
 	//提示信息
 	private String msg;
+	private Integer count;
 	//具体的内容
 	private T data;
 	public Integer getCode() {
@@ -30,5 +31,15 @@ public class Result<T> {
 	}
 	public void setData(T data) {
 		this.data = data;
+	}
+	public Integer getCount() {
+		return count;
+	}
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+	@Override
+	public String toString() {
+		return "Result [code=" + code + ", msg=" + msg + ", count=" + count + ", data=" + data + "]";
 	}
 }

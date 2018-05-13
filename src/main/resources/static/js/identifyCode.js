@@ -60,26 +60,22 @@ function validate () {
  */
 function verifyLogin(){
 	if(validate()){
-		var result = false;
-		var obj = {};
-		obj.username=$('[name="username"]').val().trim();
-		obj.password=$('[name="password"]').val().trim();
-		$.ajax({
+//		var obj = {};
+//		obj.username=$('[name="username"]').val().trim();
+//		obj.password=$('[name="password"]').val().trim();
+		/*$.ajax({
 			type:"post",
 			url:"/interLearn/user/verifyLogin",
 			data:obj,
 			success:function(){
 				alert("成功？");
 				result = true;
-				$(location).attr('href', encodeURI('http://127.0.0.1:8081/interLearn/html/index.html'));
 			},
 			error:function(){
 				alert("qingqiushibai");
 			}
-		});
-		/*if(!result){
-			$('#error').html('用户名或密码错误！');
-		}*/
+		});*/
+		$("form").submit();
 	}
 }
 

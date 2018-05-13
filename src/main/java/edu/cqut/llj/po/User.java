@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class User {
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Integer userId;
 	@NotNull
 	@Column(unique=true)
 	private String username;
@@ -31,8 +31,10 @@ public class User {
 	@JsonInclude(Include.NON_NULL)
 	private Integer sex;
 	@Column(unique=true)
+	@NotNull
 	private String mobile;
 	@Column(unique=true)
+	@NotNull
 	private String eMail;
 	@JsonInclude(Include.NON_NULL)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -46,11 +48,11 @@ public class User {
 	private Integer role;
 	public User() {
 	}
-	public Integer getId() {
-		return id;
+	public Integer getUserId() {
+		return userId;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 	public String getUsername() {
 		return username;
@@ -96,7 +98,7 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", sex=" + sex + ", mobile="
+		return "User [id=" + userId + ", username=" + username + ", password=" + password + ", sex=" + sex + ", mobile="
 				+ mobile + ", eMail=" + eMail + ", birthDay=" + birthDay + ", role=" + role + "]";
 	}
 }

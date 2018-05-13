@@ -18,7 +18,6 @@ import edu.cqut.llj.enums.ResultEnum;
 import edu.cqut.llj.exception.GirlException;
 import edu.cqut.llj.po.User;
 import edu.cqut.llj.service.UserService;
-import edu.cqut.llj.utils.JacksonUtil;
 import edu.cqut.llj.utils.ResultUtil;
 import edu.cqut.llj.vo.Result;
 import net.sf.json.JSONObject;
@@ -29,12 +28,13 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+	private JSONObject userInfo;
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping("/addUser")
 	public Result<User> addUser(@Valid User user,BindingResult bindingResult){
-		LOGGER.info("user");
 		//从注册页面注册的是普通用户
 		if(user!=null){
 			user.setRole(ResultEnum.USER.getCode());
@@ -59,22 +59,33 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("/verifyLogin")
-	public String verifyLogin(/*User user,HttpServletRequest req*/){
-		/*String username = user.getUsername();
+	public String verifyLogin(User user,HttpServletRequest req,Model model){
+		String username = user.getUsername();
 		String password = user.getPassword();
+		//用户名或密码为空，直接返回null
 		if(username==null||password==null){
 			return null;
 		}
 		User resultUser = userService.queryUserByLogin(username,password);
-		LOGGER.info(resultUser.toString());
+		if(resultUser!=null){
+			logger.info(resultUser.toString());
+		}
+		//如果查询到用户信息，向页面传值，以及注入session
 		if(resultUser!=null){
 			req.getSession().setAttribute("user", resultUser);
-			
-			String json = JacksonUtil.toJSonString(resultUser);
-			LOGGER.info(json);
-//			model.addAttribute("user", json);
-		}*/
-		return "html/index";
+			JSONObject resultJson = JSONObject.fromObject(resultUser);
+			logger.info(resultJson.toString());
+			model.addAttribute("loginInfo", resultJson);
+			//根据角色判断跳转的页面
+			if(resultUser.getRole()==0||resultUser.getRole()==1){
+				setUserInfo(resultJson);
+				return "html/admin/index";
+			}else{
+				return "html/index";
+			}
+		}
+		model.addAttribute("error", ResultEnum.LOGIN_ERROR.getMsg());
+		return "html/login";
 	}
 	
 	/**
@@ -93,5 +104,15 @@ public class UserController {
 	@GetMapping("/regester")
 	public String regester(){
 		return "html/regester";
+	}
+	
+	
+
+	public JSONObject getUserInfo() {
+		return userInfo;
+	}
+
+	public void setUserInfo(JSONObject userInfo) {
+		this.userInfo = userInfo;
 	}
 }
