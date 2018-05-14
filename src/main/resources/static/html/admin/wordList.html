@@ -19,10 +19,13 @@
   <li class="layui-nav-item" lay-unselect="">
     <a href="javascript:;"><img src="http://t.cn/RCzsdCq" class="layui-nav-img"/>我</a>
     <dl class="layui-nav-child">
-      <dd><a href="javascript:;" th:text="${user.username}">修改信息</a></dd>
+      <dd><a href="javascript:;">修改信息</a></dd>
       <dd><a href="javascript:;">安全管理</a></dd>
       <dd><a href="javascript:;">退了</a></dd>
     </dl>
+  </li>
+  <li class="layui-nav-item">
+    <a href="javascript:;" th:text="'欢迎您，'+${user.username}"><span class="layui-badge-dot"></span></a>
   </li>
 </ul>
 
@@ -38,11 +41,11 @@
 
 <!-- 编辑工具栏 -->
 <script type="text/html" id="barDemo">
-  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看例句</a>
+
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-
+  <!-- <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> -->
 <script src="../js/wordList.js"></script>
 
 </body>

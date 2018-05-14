@@ -2,15 +2,19 @@ package edu.cqut.llj.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.StringUtils;
 
 import com.github.pagehelper.PageHelper;
 
 import edu.cqut.llj.dao.WordDao;
 import edu.cqut.llj.pojo.Word;
+import edu.cqut.llj.pojo.WordExample;
+import edu.cqut.llj.utils.WordUtil;
 import edu.cqut.llj.vo.WordAndWordExample;
+import net.sf.json.JSONArray;
 import tk.mybatis.mapper.entity.Example;
 
 @Service
@@ -18,13 +22,29 @@ public class WordService {
 	
 	@Autowired
 	private WordDao wordDao;
+	private static final Logger logger = LoggerFactory.getLogger(WordService.class);
 
-	public List<Word> queryWordList() {
-		return wordDao.queryWordList();
+	/**
+	 * 查询所有单词及例句
+	 * 对于一个单词有多个例句的情况，进行去重检测
+	 * @return
+	 */
+	public JSONArray queryWordList() {
+		List<Word> list = wordDao.queryWordList();
+		JSONArray wordJson = JSONArray.fromObject(list);
+		logger.info(wordJson.toString());
+		return wordJson;
 	}
 
 	public boolean updateWord(Word word) {
 		return wordDao.updateWord(word);
+	}
+	
+	public JSONArray queryExampleById(Integer word_id) {
+		List<WordExample> list = wordDao.queryExampleById(word_id);
+		JSONArray wordJson = JSONArray.fromObject(list);
+		logger.info(wordJson.toString());
+		return wordJson;
 	}
 
 	public List<Word> queryWordListPaged(Word word, Integer page, Integer pageSize) {
@@ -32,7 +52,7 @@ public class WordService {
 		PageHelper.startPage(page,pageSize);
 		
 		Example example = new Example(Word.class);
-		Example.Criteria criteria = example.createCriteria();
+//		Example.Criteria criteria = example.createCriteria();
 		
 //		if (!StringUtils.isEmptyOrWhitespace(word.getWordname())) {
 //			criteria.andLike("nickname", "%" + word.getWordname() + "%");
@@ -45,4 +65,5 @@ public class WordService {
 	public List<WordAndWordExample> test() {
 		return wordDao.test();
 	}
+
 }

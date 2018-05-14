@@ -20,8 +20,13 @@
     <result column="word_id" property="wordId" jdbcType="INTEGER" />
   </resultMap>
   <!-- parameterType="java.lang.Integer"  -->
-	<select id="test" resultType="edu.cqut.llj.vo.WordAndWordExample"> 
+  	<!-- 查询所有单词 -->
+	<select id="wordAndExample" resultType="edu.cqut.llj.vo.WordAndWordExample"> 
 		select a.word_id,a.word_describe,a.word_translate,a.wordname,b.word_example_cn,b.word_example_en
 		from word a join word_example b on a.word_id=b.word_id
+	</select>
+	<!-- 根据word_id查询例句 -->
+	<select id="queryExampleById" resultType="edu.cqut.llj.pojo.WordExample" parameterType="java.lang.Integer"> 
+		select * from word_example where word_id=#{word_id}
 	</select>
 </mapper>

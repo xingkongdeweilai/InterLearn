@@ -22,13 +22,11 @@ import edu.cqut.llj.utils.ResultUtil;
 import edu.cqut.llj.vo.Result;
 import edu.cqut.llj.vo.WordAndWordExample;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/word")
 public class WordController {
 	
-	@SuppressWarnings("unused")
 	@Autowired
 	private UserController userController;
 	@Autowired
@@ -45,18 +43,17 @@ public class WordController {
     }
     
     /**
-     * 加载单词列表
+     * 加载单词列表及例句
      * @return
      */
 	@SuppressWarnings("unchecked")
 	@GetMapping("/wordList")
     @ResponseBody
-    public Result<Word> wordList(){
-    	List<Word> list = wordService.queryWordList();
-    	JSONArray wordJson = JSONArray.fromObject(list);
+    public Result<WordAndWordExample> wordList(){
+    	JSONArray wordJson = wordService.queryWordList();
     	logger.info(ResultUtil.success(wordJson).toString());
-    	JSONObject json = new JSONObject();
-    	json.put("data", wordJson);
+//    	JSONObject json = new JSONObject();
+//    	json.put("data", wordJson);
 		return ResultUtil.success(wordJson);
     }
 	
@@ -74,6 +71,17 @@ public class WordController {
 		}
 		return ResultUtil.error(ResultEnum.UPDATE_WORD_ERROR.getCode(), ResultEnum.UPDATE_WORD_ERROR.getMsg());
 	}
+	
+	/**
+	 * 根据word_id查询例句
+	 * @param word_id
+	 */
+	@GetMapping("/queryExample")
+	@ResponseBody
+	public JSONArray queryExampleById(@Valid Word word){
+		return wordService.queryExampleById(word.getWord_id());
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	@PostMapping("/queryWordListPaged")

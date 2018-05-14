@@ -23,7 +23,7 @@ layui.use('table', function(){
 	    }
 	    ,cols: [[ //表头
 	       {type:'checkbox'}
-	      ,{field:'word_id', width:50,minWidth:50, sort: true,title:"ID",type:'numbers'}
+	      ,{field:'word_id', width:50,minWidth:50,title:"ID",type:'numbers'}
 	      ,{field:'wordname', width:120, sort: true, edit: 'text',title:"单词"}
 	      ,{field:'word_describe',width:360, minWidth: 150, edit: 'text',title:"描述"}
 	      ,{field:'word_translate', edit: 'text',title:"翻译"} 
@@ -50,11 +50,43 @@ layui.use('table', function(){
   table.on('checkbox(test3)', function(obj){
     console.log(obj);
   });
-//监听工具条
-  table.on('tool(demo)', function(obj){
+  
+  //监听工具条
+  table.on('tool(test3)', function(obj){
     var data = obj.data;
     if(obj.event === 'detail'){
-      layer.msg('ID：'+ data.id + ' 的查看操作');
+    	//查询example
+        $.ajax({
+    		type:"get",
+    		url:"/interLearn/word/queryExample",
+    		data:data,
+    		success:function(result){
+    			var example = jsonarrayToStr(result);
+    			layer.prompt({
+    	    		  formType: 2,
+    	    		  value: example,
+    	    		  title: '查看例句',
+    	    		  area: ['800px', '350px'] //自定义文本域宽高
+    	    		}, function(value, index, elem){
+    	    			$.ajax({
+    	    				type:"get",
+    	    				url:"/interLearn/word/updateExample",
+    	    				data:value,
+    	    				success:function(){
+    	    					layer.msg("修改成功");
+    	    				},
+    	    				error:function(){
+    	    					layer.msg("修改失败，请联系相关人员");
+    	    				}
+    	    			});
+    	    		  layer.close(index);
+    	    		});
+    		},
+    		error:function(){
+    			layer.msg("查询失败，请联系相关人员");
+    		}
+    	});
+    	
     } else if(obj.event === 'del'){
       layer.confirm('真的删除行么', function(index){
         obj.del();
@@ -67,17 +99,17 @@ layui.use('table', function(){
   
   var $ = layui.$, active = {
     getCheckData: function(){ //获取选中数据
-      var checkStatus = table.checkStatus('idTest')
+      var checkStatus = table.checkStatus('test3')
       ,data = checkStatus.data;
       layer.alert(JSON.stringify(data));
     }
     ,getCheckLength: function(){ //获取选中数目
-      var checkStatus = table.checkStatus('idTest')
+      var checkStatus = table.checkStatus('test3')
       ,data = checkStatus.data;
       layer.msg('选中了：'+ data.length + ' 个');
     }
     ,isAll: function(){ //验证是否全选
-      var checkStatus = table.checkStatus('idTest');
+      var checkStatus = table.checkStatus('test3');
       layer.msg(checkStatus.isAll ? '全选': '未全选')
     }
   };
@@ -100,3 +132,11 @@ layui.use('element', function(){
 	    layer.msg(elem.text());
 	  });
 });
+
+function jsonarrayToStr(jsonarray){
+	var result="";
+	for(var i in jsonarray){
+		result = result.concat(JSON.stringify(jsonarray[i]));
+	}
+	return result;
+}
