@@ -12,5 +12,8 @@ public interface WordMapper extends MyMapper<Word> {
 	List<WordAndWordExample> wordAndExample();
 
 	List<WordExample> queryExampleById(Integer word_id);
+
+	/*WordAndWordExample queryDetailById(Integer word_id);*/
 	
+	Word queryWordById(Integer word_id);
 }

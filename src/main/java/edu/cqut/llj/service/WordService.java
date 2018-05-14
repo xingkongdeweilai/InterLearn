@@ -12,9 +12,9 @@ import com.github.pagehelper.PageHelper;
 import edu.cqut.llj.dao.WordDao;
 import edu.cqut.llj.pojo.Word;
 import edu.cqut.llj.pojo.WordExample;
-import edu.cqut.llj.utils.WordUtil;
 import edu.cqut.llj.vo.WordAndWordExample;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import tk.mybatis.mapper.entity.Example;
 
 @Service
@@ -43,10 +43,21 @@ public class WordService {
 	public JSONArray queryExampleById(Integer word_id) {
 		List<WordExample> list = wordDao.queryExampleById(word_id);
 		JSONArray wordJson = JSONArray.fromObject(list);
-		logger.info(wordJson.toString());
 		return wordJson;
 	}
 
+	public JSONObject queryWordById(Integer word_id){
+		Word word = wordDao.queryWordById(word_id);
+		return JSONObject.fromObject(word);
+	}
+	
+	/*public WordAndWordExample queryDetailById(Integer word_id) {
+		return wordDao.queryDetailById(word_id);
+	}*/
+
+	
+	
+	
 	public List<Word> queryWordListPaged(Word word, Integer page, Integer pageSize) {
 		//开始分页
 		PageHelper.startPage(page,pageSize);

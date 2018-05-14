@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.cqut.llj.enums.ResultEnum;
@@ -22,6 +21,7 @@ import edu.cqut.llj.utils.ResultUtil;
 import edu.cqut.llj.vo.Result;
 import edu.cqut.llj.vo.WordAndWordExample;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/word")
@@ -67,7 +67,7 @@ public class WordController {
 	@ResponseBody
 	public Result<Word> updateWord(@Valid Word word){
 		if(wordService.updateWord(word)){
-			return ResultUtil.success();
+			return ResultUtil.success(word);
 		}
 		return ResultUtil.error(ResultEnum.UPDATE_WORD_ERROR.getCode(), ResultEnum.UPDATE_WORD_ERROR.getMsg());
 	}
@@ -81,6 +81,26 @@ public class WordController {
 	public JSONArray queryExampleById(@Valid Word word){
 		return wordService.queryExampleById(word.getWord_id());
 	}
+	
+	/**
+	 * 跳转到wordDetail页面
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/queryDetailById")
+    public String queryDetailById(Model model,@Valid Word word) {
+    	model.addAttribute("user", userController.getUserInfo());
+    	JSONObject wordJson = wordService.queryWordById(word.getWord_id());
+    	model.addAttribute("word", wordJson);
+    	logger.info(wordJson.toString());
+    	JSONArray exampleJson = wordService.queryExampleById(word.getWord_id());
+    	model.addAttribute("example", exampleJson);
+    	logger.info(exampleJson.toString());
+        return "html/admin/wordDetail";
+    }
+	
+	
+	
 	
 	
 	@SuppressWarnings("unchecked")

@@ -42,7 +42,15 @@ public class WordDao {
 	public List<WordExample> queryExampleById(Integer word_id) {
 		return wordMapper.queryExampleById(word_id);
 	}
+	
+	public Word queryWordById(Integer word_id){
+		return wordMapper.queryWordById(word_id);
+	}
 
+	/*public WordAndWordExample queryDetailById(Integer word_id) {
+		return wordMapper.queryDetailById(word_id);
+	}*/
+	
 	/**
 	 * 单词列表分页
 	 * @param example
