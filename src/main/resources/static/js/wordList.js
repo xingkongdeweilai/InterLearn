@@ -55,13 +55,14 @@ layui.use('table', function(){
   table.on('tool(test3)', function(obj){
 	  var data = obj.data //得到所在行所有键值
 	  if(obj.event === 'detail'){
-//		  $(location).attr('href', '../word/toWordDetail');
+		$(location).attr('href', encodeURI('../html/admin/wordDetail.html?word_id='+data.word_id));
     	//查询example
-        $.ajax({
-    		type:"get",
-    		url:"/interLearn/word/queryDetailById",
-    		data:data,
-    		success:function(result){
+//        $.ajax({
+//    		type:"get",
+//    		url:"/interLearn/word/queryDetailById",
+//    		data:data,
+//    		success:function(result){
+//    			console.log(result.wordname);
 //    			var example = jsonarrayToStr(result);
 //    			layer.prompt({
 //    	    		  formType: 2,
@@ -82,11 +83,11 @@ layui.use('table', function(){
 //    	    			});
 //    	    		  layer.close(index);
 //    	    		});
-    		},
-    		error:function(){
-    			layer.msg("查询失败，请联系相关人员");
-    		}
-    	});
+//    		},
+//    		error:function(){
+//    			layer.msg("查询失败，请联系相关人员");
+//    		}
+//    	});
     	
     } else if(obj.event === 'del'){
       layer.confirm('真的删除行么', function(index){

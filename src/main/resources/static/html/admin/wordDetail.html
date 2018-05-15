@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-	<link rel="stylesheet" href="../layui/css/layui.css" media="all"/>
+	<link rel="stylesheet" href="../../layui/css/layui.css" media="all"/>
 </head>
 <body>
 <ul class="layui-nav">
@@ -28,9 +28,10 @@
     <a href="javascript:;" th:text="'欢迎您，'+${user.username}"><span class="layui-badge-dot"></span></a>
   </li>
 </ul>
+<p th:text="${}"></p>
 
-<script src="../layui/layui.js" charset="utf-8"></script>
-<script src="../js/jquery-1.9.1.min.js"></script>
+<script src="../../layui/layui.js" charset="utf-8"></script>
+<script src="../../js/jquery-1.9.1.min.js"></script>
 
 </body>
 </html>

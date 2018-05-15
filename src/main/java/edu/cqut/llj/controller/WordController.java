@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.cqut.llj.enums.ResultEnum;
@@ -88,15 +89,17 @@ public class WordController {
 	 * @return
 	 */
 	@GetMapping("/queryDetailById")
-    public String queryDetailById(Model model,@Valid Word word) {
+	@ResponseBody
+    public JSONObject queryDetailById(Model model,@RequestParam("word_id") Integer word_id) {
+		logger.info(word_id.toString());
     	model.addAttribute("user", userController.getUserInfo());
-    	JSONObject wordJson = wordService.queryWordById(word.getWord_id());
+    	JSONObject wordJson = wordService.queryWordById(word_id);
     	model.addAttribute("word", wordJson);
     	logger.info(wordJson.toString());
-    	JSONArray exampleJson = wordService.queryExampleById(word.getWord_id());
+    	JSONArray exampleJson = wordService.queryExampleById(word_id);
     	model.addAttribute("example", exampleJson);
     	logger.info(exampleJson.toString());
-        return "html/admin/wordDetail";
+        return wordJson;
     }
 	
 	
