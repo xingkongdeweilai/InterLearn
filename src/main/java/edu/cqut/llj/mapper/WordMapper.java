@@ -5,6 +5,7 @@ import java.util.List;
 import edu.cqut.llj.pojo.Word;
 import edu.cqut.llj.pojo.WordExample;
 import edu.cqut.llj.utils.MyMapper;
+import edu.cqut.llj.vo.ThreeWordExample;
 import edu.cqut.llj.vo.WordAndWordExample;
 
 public interface WordMapper extends MyMapper<Word> {
@@ -16,4 +17,6 @@ public interface WordMapper extends MyMapper<Word> {
 	/*WordAndWordExample queryDetailById(Integer word_id);*/
 	
 	Word queryWordById(Integer word_id);
+
+	void updateWordExample(ThreeWordExample wordExamples, Integer word_id);
 }

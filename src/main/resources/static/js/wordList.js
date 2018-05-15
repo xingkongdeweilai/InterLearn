@@ -55,7 +55,7 @@ layui.use('table', function(){
   table.on('tool(test3)', function(obj){
 	  var data = obj.data //得到所在行所有键值
 	  if(obj.event === 'detail'){
-		$(location).attr('href', encodeURI('../html/admin/wordDetail.html?word_id='+data.word_id));
+		$(location).attr('href', encodeURI('/interLearn/word/queryDetailById?word_id='+data.word_id));
     	//查询example
 //        $.ajax({
 //    		type:"get",

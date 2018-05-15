@@ -23,13 +23,11 @@ public class WordExample {
 	/**
 	 * 单词例句英文
 	 */
-	@NotNull
 	private String wordExampleEn;
 	
 	/**
 	 * 单词例句中文
 	 */
-	@NotNull
 	private String wordExampleCn;
 	
 	/**

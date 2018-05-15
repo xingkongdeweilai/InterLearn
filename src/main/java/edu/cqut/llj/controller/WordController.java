@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 import edu.cqut.llj.enums.ResultEnum;
+import edu.cqut.llj.pojo.WordExample;
 import edu.cqut.llj.pojo.Word;
 import edu.cqut.llj.service.WordService;
 import edu.cqut.llj.utils.ResultUtil;
 import edu.cqut.llj.vo.Result;
+import edu.cqut.llj.vo.ThreeWordExample;
 import edu.cqut.llj.vo.WordAndWordExample;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -67,7 +71,7 @@ public class WordController {
 	@PostMapping("/updateWord")
 	@ResponseBody
 	public Result<Word> updateWord(@Valid Word word){
-		if(wordService.updateWord(word)){
+		if(wordService.updateWord(word)!=null){
 			return ResultUtil.success(word);
 		}
 		return ResultUtil.error(ResultEnum.UPDATE_WORD_ERROR.getCode(), ResultEnum.UPDATE_WORD_ERROR.getMsg());
@@ -89,9 +93,7 @@ public class WordController {
 	 * @return
 	 */
 	@GetMapping("/queryDetailById")
-	@ResponseBody
-    public JSONObject queryDetailById(Model model,@RequestParam("word_id") Integer word_id) {
-		logger.info(word_id.toString());
+    public String queryDetailById(Model model,@RequestParam("word_id") Integer word_id) {
     	model.addAttribute("user", userController.getUserInfo());
     	JSONObject wordJson = wordService.queryWordById(word_id);
     	model.addAttribute("word", wordJson);
@@ -99,8 +101,20 @@ public class WordController {
     	JSONArray exampleJson = wordService.queryExampleById(word_id);
     	model.addAttribute("example", exampleJson);
     	logger.info(exampleJson.toString());
-        return wordJson;
+        return "html/admin/wordDetail";
     }
+	
+	@GetMapping("/updateWordAndExample")
+	public String updateWordAndExample(@Valid Word word,ThreeWordExample wordExamples,Model model){
+		logger.info(wordExamples.toString());
+		if(wordService.updateWord(word)!=null
+				&&wordService.updateWordExample(1,wordExamples.getWord_example_cn1(),wordExamples.getWord_example_en1(),word.getWord_id())!=null){
+			model.addAttribute("user", userController.getUserInfo());
+			model.addAttribute("word", word);
+			return "html/admin/wordDetail";
+		}
+		return "html/error";
+	}
 	
 	
 	

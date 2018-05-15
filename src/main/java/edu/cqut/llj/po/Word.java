@@ -29,13 +29,11 @@ public class Word {
 	/**
 	 * 英文描述
 	 */
-	@NotNull
 	private String wordDescribe;
 	
 	/**
 	 * 中文翻译
 	 */
-	@NotNull
 	private String wordTranslate;
 
 	public Word() {

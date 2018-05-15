@@ -17,3 +17,5 @@
 5、iframe与父级框架的数据沟通：在control层定义一个局部变量json，子框架的请求调用此json的数据
 6、使用layui表格不能正确加载后台传来的数据，原因table.render里面把默认成功返回值修改response:{statusCode:json code}
 7、jquery与layui冲突，解决：换了一个jquery版本，1.9.1
+8、wordList跳转到wordDetail传参问题，向controller层传值时用?的形式
+9、在单词详情页面由于例句有多条，jsonArray设置三条，没有的用空字符串表示

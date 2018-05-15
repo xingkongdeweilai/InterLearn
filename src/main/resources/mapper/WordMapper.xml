@@ -43,4 +43,9 @@
 		from word
 		where word_id=#{word_id}
 	</select>
+	<!-- 根据word_id修改wordExample -->
+	<update id="updateWordExample">
+		update word_example
+		where 
+	</update>
 </mapper>

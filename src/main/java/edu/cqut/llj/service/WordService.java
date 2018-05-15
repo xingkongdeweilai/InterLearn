@@ -12,6 +12,7 @@ import com.github.pagehelper.PageHelper;
 import edu.cqut.llj.dao.WordDao;
 import edu.cqut.llj.pojo.Word;
 import edu.cqut.llj.pojo.WordExample;
+import edu.cqut.llj.vo.ThreeWordExample;
 import edu.cqut.llj.vo.WordAndWordExample;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -36,7 +37,7 @@ public class WordService {
 		return wordJson;
 	}
 
-	public boolean updateWord(Word word) {
+	public Word updateWord(Word word) {
 		return wordDao.updateWord(word);
 	}
 	
@@ -49,6 +50,10 @@ public class WordService {
 	public JSONObject queryWordById(Integer word_id){
 		Word word = wordDao.queryWordById(word_id);
 		return JSONObject.fromObject(word);
+	}
+
+	public ThreeWordExample updateWordExample(ThreeWordExample wordExamples, Integer word_id) {
+		return wordDao.updateWordExample(wordExamples, word_id);
 	}
 	
 	/*public WordAndWordExample queryDetailById(Integer word_id) {
