@@ -53,12 +53,14 @@ public class WordController {
 	@SuppressWarnings("unchecked")
 	@GetMapping("/wordList")
     @ResponseBody
-    public Result<WordAndWordExample> wordList(Model model){
-    	JSONArray wordJson = wordService.queryWordList();
+    public Result<Word> wordList(Model model
+    		,@RequestParam(value="page", required=false,defaultValue="1") Integer page
+    		,@RequestParam(value="limit", required=false,defaultValue="10") Integer limit){
+		Word word = new Word();
+		JSONArray wordJson = wordService.queryWordListPaged(word,page,limit);
+		
     	logger.info(ResultUtil.success(wordJson).toString());
-//    	JSONObject json = new JSONObject();
-//    	json.put("data", wordJson);
-		return ResultUtil.success(wordJson);
+		return ResultUtil.success(wordJson,wordService.getWordListSize());
     }
 	
 	/**

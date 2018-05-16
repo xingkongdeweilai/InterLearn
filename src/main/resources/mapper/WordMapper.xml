@@ -37,6 +37,11 @@
 		from word
 		where word_id=#{word_id}
 	</select>
+	<!-- 查询wordList的总长度 -->
+	<select id="getWordListSize" resultType="java.lang.Integer"> 
+		SELECT count(*)
+		from word
+	</select>
 	<!-- 根据word_id修改wordExample -->
 	<!-- <update id="updateWordExample">
 		update word_example

@@ -11,6 +11,7 @@ import edu.cqut.llj.mapper.WordMapper;
 import edu.cqut.llj.pojo.Word;
 import edu.cqut.llj.vo.ThreeWordExample;
 import edu.cqut.llj.vo.WordAndWordExample;
+import net.sf.json.JSONArray;
 import tk.mybatis.mapper.entity.Example;
 
 @Component
@@ -62,6 +63,24 @@ public class WordDao {
 
 	public int addNewWord(Word word) {
 		return wordMapper.insertSelective(word);
+	}
+
+	/**
+	 * 分页查询
+	 * @param page
+	 * @param limit
+	 * @return
+	 */
+	public List<Word> queryWordListPaged(Example example) {
+		return wordMapper.selectByExample(example);
+	}
+
+	/**
+	 * 查询wordList的总长度
+	 * @return
+	 */
+	public Integer getWordListSize() {
+		return wordMapper.getWordListSize();
 	}
 
 	/**

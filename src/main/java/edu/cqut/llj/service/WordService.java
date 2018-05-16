@@ -61,6 +61,29 @@ public class WordService {
 		return wordDao.addNewWord(word);
 	}
 
+	/**
+	 * 分页查询单词
+	 * @param word 
+	 * @param page
+	 * @param limit
+	 * @return
+	 */
+	public JSONArray queryWordListPaged(Word word, Integer page, Integer limit) {
+		PageHelper.startPage(page,limit);
+		Example example = new Example(Word.class);
+		example.orderBy("wordname").asc();
+		List<Word> list = wordDao.queryWordListPaged(example);
+		return JSONArray.fromObject(list);
+	}
+
+	/**
+	 * 查询wordList的总长度
+	 * @return
+	 */
+	public Integer getWordListSize() {
+		return wordDao.getWordListSize();
+	}
+
 //	public ThreeWordExample updateWordExample(String cn,String en, Integer word_id) {
 //		return wordDao.updateWordExample(cn,en, word_id);
 //	}

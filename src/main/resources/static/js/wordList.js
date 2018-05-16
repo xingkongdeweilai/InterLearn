@@ -26,11 +26,9 @@ layui.use(['table','laypage'], function(){
   table.render({
 	    elem: '#test3'
 	    ,url: '/interLearn/word/wordList' //数据接口
-//	    ,page: {
-//	    	count:60
-//	    	,limit:5
-//	    	,gourps:1
-//	    } //开启分页
+	    ,page: {
+	    	 layout: ['prev', 'page', 'next', 'skip', 'count']
+	    } //开启分页
 	    ,initSort:{
 	    	field:'wordname'
 	    	,type:'asc'
@@ -43,29 +41,29 @@ layui.use(['table','laypage'], function(){
 	      ,{field:'word_id', width:50,minWidth:50,title:"序号",type:'numbers'}
 	      ,{field:'wordname', width:120, sort: true, edit: 'text',title:"单词"}
 	      ,{field:'word_describe',width:360,event: 'setDescribe', minWidth: 150,title:"描述"}
-	      ,{field:'word_translate',event: 'setTranslate',title:"翻译"} 
-	      ,{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}
+	      ,{field:'word_translate',width:360,event: 'setTranslate',title:"翻译"} 
+	      ,{fixed: 'right', align:'center', toolbar: '#barDemo'}
 	    ]]
 	  });
   
 //执行一个laypage实例
-  laypage.render({
-    elem: 'test3' //注意，这里的 test1 是 ID，不用加 # 号
-    ,count: 51 //数据总数，从服务端得到
-    ,layout: ['count', 'prev', 'page', 'next', 'skip','refresh'] //自定义分页布局
-  	,first: false //不显示首页
-    ,last: false //不显示尾页
-    ,jump:function(obj, first){
-        //obj包含了当前分页的所有参数，比如：
-        console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-        console.log(obj.limit); //得到每页显示的条数
-        
-        //首次不执行
-        if(!first){
-          //do something
-        }
-      }
-  });
+//  laypage.render({
+//    elem: '#test3' //注意，这里的 test1 是 ID，不用加 # 号
+//    ,count: [[${count}]] //数据总数，从服务端得到
+//    ,layout: ['count', 'prev', 'page', 'next', 'skip','refresh'] //自定义分页布局
+//  	,first: false //不显示首页
+//    ,last: false //不显示尾页
+//    ,jump:function(obj, first){
+//        //obj包含了当前分页的所有参数，比如：
+//        console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+//        console.log(obj.limit); //得到每页显示的条数
+//        
+//        //首次不执行
+//        if(!first){
+//          //do something
+//        }
+//      }
+//  });
   
   //监听单词单元格编辑
   table.on('edit(test3)', function(obj){

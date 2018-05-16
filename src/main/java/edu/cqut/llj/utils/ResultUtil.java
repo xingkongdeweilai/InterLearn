@@ -2,6 +2,7 @@ package edu.cqut.llj.utils;
 
 import edu.cqut.llj.enums.ResultEnum;
 import edu.cqut.llj.vo.Result;
+import net.sf.json.JSONArray;
 
 public class ResultUtil {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -10,7 +11,17 @@ public class ResultUtil {
 		result.setCode(ResultEnum.SUCCESS.getCode());
 		result.setMsg(ResultEnum.SUCCESS.getMsg());
 		result.setData(object);
-		result.setCount(1000);
+		result.setCount(0);
+		return result;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static Result success(JSONArray jsonArray, Integer size){
+		Result result = new Result();
+		result.setCode(ResultEnum.SUCCESS.getCode());
+		result.setMsg(ResultEnum.SUCCESS.getMsg());
+		result.setData(jsonArray);
+		result.setCount(size);
 		return result;
 	}
 	
