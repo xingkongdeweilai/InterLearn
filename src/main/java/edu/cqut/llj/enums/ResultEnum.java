@@ -10,6 +10,8 @@ public enum ResultEnum {
 	LOGIN_NULL(104,"登录账号或密码为空"),
 	LOGIN_ERROR(105,"账号或密码错误"),
 	UPDATE_WORD_ERROR(106,"更新单词错误"),
+	ADD_WORD_ERROR(107,"添加单词错误"),
+	ADD_WORDNAME_NULL(108,"单词名为空"),
 	
 	SUPER_ADMIN(0,"超级管理员"),
 	ADMIN(1,"管理员"),

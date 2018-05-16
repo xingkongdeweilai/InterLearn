@@ -2,35 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.cqut.llj.mapper.WordMapper">
   <resultMap id="WordResultMap" type="edu.cqut.llj.pojo.Word">
-    <!--
-      WARNING - @mbg.generated
-    -->
     <id column="word_id" jdbcType="INTEGER" property="wordId" />
     <result column="word_describe" jdbcType="VARCHAR" property="wordDescribe" />
     <result column="word_translate" jdbcType="VARCHAR" property="wordTranslate" />
     <result column="wordname" jdbcType="VARCHAR" property="wordname" />
-  </resultMap>
-  <resultMap id="WordExampleResultMap" type="edu.cqut.llj.pojo.WordExample" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="word_example_cn" property="wordExampleCn" jdbcType="VARCHAR" />
-    <result column="word_example_en" property="wordExampleEn" jdbcType="VARCHAR" />
-    <result column="word_id" property="wordId" jdbcType="INTEGER" />
+    <result column="word_example_cn1" jdbcType="VARCHAR" property="wordExampleCn1" />
+    <result column="word_example_cn2" jdbcType="VARCHAR" property="wordExampleCn2" />
+    <result column="word_example_cn3" jdbcType="VARCHAR" property="wordExampleCn3" />
+    <result column="word_example_en1" jdbcType="VARCHAR" property="wordExampleEn1" />
+    <result column="word_example_en2" jdbcType="VARCHAR" property="wordExampleEn2" />
+    <result column="word_example_en3" jdbcType="VARCHAR" property="wordExampleEn3" />
   </resultMap>
   <!-- parameterType="java.lang.Integer"  -->
   	<!-- 查询所有单词 -->
-	<select id="wordAndExample" resultType="edu.cqut.llj.vo.WordAndWordExample"> 
+	<!-- <select id="wordAndExample" resultType="edu.cqut.llj.vo.WordAndWordExample"> 
 		select a.word_id,a.word_describe,a.word_translate,a.wordname,b.word_example_cn,b.word_example_en
 		from word a join word_example b on a.word_id=b.word_id
-	</select>
+	</select> -->
 	<!-- 根据word_id查询例句 -->
-	<select id="queryExampleById" resultType="edu.cqut.llj.pojo.WordExample" parameterType="java.lang.Integer"> 
+	<!-- <select id="queryExampleById" resultType="edu.cqut.llj.pojo.WordExample" parameterType="java.lang.Integer"> 
 		select *
 		from word_example
 		where word_id=#{word_id}
-	</select>
+	</select> -->
 	<!-- 根据word_id查询单词详情（wordAndWordExample） -->
 	<!-- <select id="queryDetailById" resultType="edu.cqut.llj.vo.WordAndWordExample" parameterType="java.lang.Integer"> 
 		select a.word_id,a.word_describe,a.word_translate,a.wordname,b.word_example_cn,b.word_example_en
@@ -44,8 +38,9 @@
 		where word_id=#{word_id}
 	</select>
 	<!-- 根据word_id修改wordExample -->
-	<update id="updateWordExample">
+	<!-- <update id="updateWordExample">
 		update word_example
-		where 
-	</update>
+		set word_example_cn = #{1},word_example_en=#{2}
+		where id=#{0}
+	</update> -->
 </mapper>

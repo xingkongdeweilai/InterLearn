@@ -15,7 +15,7 @@
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/dbinterLearn"
                         userId="root"
-                        password="LJYX97010208">
+                        password="ljyx02089701">
         </jdbcConnection>
 
         <!-- 对于生成的pojo所在包 -->
@@ -29,7 +29,7 @@
                              type="XMLMAPPER"/>
 
 
-		<table tableName="word_example"></table>
+		<table tableName="word"></table>
 		 
     </context>
 </generatorConfiguration>

@@ -28,62 +28,65 @@
     <a href="javascript:;" th:text="'欢迎您，'+${user.username}"><span class="layui-badge-dot"></span></a>
   </li>
 </ul>
-<p th:text="'编辑'+${word.wordname}"></p>
-<form class="layui-form" action="/interLearn/word/updateWordAndExample" method="get" lay-filter="example">
+<p th:text="${handle}+''+${word.wordname}"></p>
+<form class="layui-form" action="" method="" lay-filter="example">
+		<p th:text="${wordname}" style="position:absolute;left: 55px; top: 90px;"></p>
+		<div class="layui-input-block">
+			<input type="hidden" th:attr="type=${type}" name="wordname" autocomplete="off" class="layui-input"/>
+		</div>
   <div class="layui-form-item">
     <label class="layui-form-label">翻译</label>
     <div class="layui-input-block">
-      <input type="text" name="word_translate" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input"/>
+      <input type="text" name="word_translate" lay-verify="title" autocomplete="off" placeholder="" class="layui-input"/>
     </div>
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label">描述</label>
     <div class="layui-input-block">
-      <input type="text" name="word_describe" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input"/>
+      <input type="text" name="word_describe" lay-verify="title" autocomplete="off" placeholder="" class="layui-input"/>
     </div>
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label">英文例句1</label>
     <div class="layui-input-block">
-      <input type="text" name="word_example_en1" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input"/>
+      <input type="text" name="word_example_en1" lay-verify="title" autocomplete="off" placeholder="" class="layui-input"/>
     </div>
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label">中文例句1</label>
     <div class="layui-input-block">
-      <input type="text" name="word_example_cn1" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input"/>
+      <input type="text" name="word_example_cn1" lay-verify="title" autocomplete="off" placeholder="" class="layui-input"/>
     </div>
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label">英文例句2</label>
     <div class="layui-input-block">
-      <input type="text" name="word_example_en2" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input"/>
+      <input type="text" name="word_example_en2" lay-verify="title" autocomplete="off" placeholder="" class="layui-input"/>
     </div>
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label">中文例句2</label>
     <div class="layui-input-block">
-      <input type="text" name="word_example_cn2" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input"/>
+      <input type="text" name="word_example_cn2" lay-verify="title" autocomplete="off" placeholder="" class="layui-input"/>
     </div>
   </div>
    <div class="layui-form-item">
     <label class="layui-form-label">英文例句3</label>
     <div class="layui-input-block">
-      <input type="text" name="word_example_en3" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input"/>
+      <input type="text" name="word_example_en3" lay-verify="title" autocomplete="off" placeholder="" class="layui-input"/>
     </div>
   </div>
   <div class="layui-form-item">
     <label class="layui-form-label">中文例句3</label>
     <div class="layui-input-block">
-      <input type="text" name="word_example_cn3" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input"/>
+      <input type="text" name="word_example_cn3" lay-verify="title" autocomplete="off" placeholder="" class="layui-input"/>
     </div>
   </div>
   <input type="hidden" name="word_id"/>
-  <input type="hidden" name="wordname"/>
   <div class="layui-form-item">
     <div class="layui-input-block">
-      <button class="layui-btn" lay-submit="" lay-filter="demo1">提交修改</button>
-      <button class="layui-btn" lay-filter="demo2" type="button">恢复</button>
+      <button class="layui-btn" lay-filter="demo1" onclick="doSubmit()">提交</button>
+      <button class="layui-btn" lay-filter="demo2" onclick="doReset()">恢复</button>
     </div>
   </div>
 </form>
@@ -91,40 +94,71 @@
 <script src="../layui/layui.all.js" charset="utf-8"></script>
 <script src="../js/jquery-1.9.1.min.js"></script>
 <script th:inline="javascript">
-	layui.use(['form', 'layedit', 'laydate'], function(){
-		var form = layui.form
-		,layer = layui.layer
-		,layedit = layui.layedit
+	var form,layer;
+	layui.use(['form', 'layedit', 'laydate', 'layer'], function(){
+		form = layui.form;
+		layer = layui.layer;
+		var layedit = layui.layedit
 		,laydate = layui.laydate;
 		
 		//表单初始赋值
 		form.val('example', {
 			"word_translate": [[${word.word_translate}]]
 			,"word_describe": [[${word.word_describe}]]
-			,"word_example_en1": [[${example[0].word_example_en}]]
-			,"word_example_cn1": [[${example[0].word_example_cn}]]
-			,"word_example_en2": [[${example[1].word_example_en}]]
-			,"word_example_cn2": [[${example[1].word_example_cn}]]
-			,"word_example_en3": [[${example[2].word_example_en}]]
-			,"word_example_cn3": [[${example[2].word_example_cn}]]
+			,"word_example_en1": [[${word.word_example_en1}]]
+			,"word_example_cn1": [[${word.word_example_cn1}]]
+			,"word_example_en2": [[${word.word_example_en2}]]
+			,"word_example_cn2": [[${word.word_example_cn2}]]
+			,"word_example_en3": [[${word.word_example_en3}]]
+			,"word_example_cn3": [[${word.word_example_cn3}]]
 			,"word_id":[[${word.word_id}]]
 			,"wordname":[[${word.wordname}]]
 		});
-		
-		//监听提交
-		form.on('submit(demo1)', function(data){
-			console.log(data.elem);
-			console.log(data.form);
-			layer.alert(JSON.stringify(data.field), {
-			  title: '最终的提交信息'
-			});
-		});
 	});
 	
-	/* function doSubmit(){
-		$("form").submit();
-		alert("修改成功");
-	} */
+	//提交修改单词请求
+	function doSubmit(){
+		//组装请求数据 单词
+		var word={};
+		word["word_translate"]=$("[name='word_translate']").val();
+		word["word_describe"]=$("[name='word_describe']").val();
+		word["word_example_en1"]=$("[name='word_example_en1']").val();
+		word["word_example_cn1"]=$("[name='word_example_cn1']").val();
+		word["word_example_en2"]=$("[name='word_example_en2']").val();
+		word["word_example_cn2"]=$("[name='word_example_cn2']").val();
+		word["word_example_en3"]=$("[name='word_example_en3']").val();
+		word["word_example_cn3"]=$("[name='word_example_cn3']").val();
+		word["word_id"]=$("[name='word_id']").val();
+		word["wordname"]=$("[name='wordname']").val();
+		$.ajax({
+			type:"get",
+			url:"/interLearn/word/updateWord",
+			data:word,
+			success:function(data){
+				if(data.code==99){
+					alert('操作成功');
+				}else{
+					alert('操作失败，'+data.msg);
+				}
+			}
+		});
+	}
+	
+	//回复用户输入
+	function doReset(){
+		form.val('example', {
+			"word_translate": [[${word.word_translate}]]
+			,"word_describe": [[${word.word_describe}]]
+			,"word_example_en1": [[${word.word_example_en1}]]
+			,"word_example_cn1": [[${word.word_example_cn1}]]
+			,"word_example_en2": [[${word.word_example_en2}]]
+			,"word_example_cn2": [[${word.word_example_cn2}]]
+			,"word_example_en3": [[${word.word_example_en3}]]
+			,"word_example_cn3": [[${word.word_example_cn3}]]
+			,"word_id":[[${word.word_id}]]
+			,"wordname":[[${word.wordname}]]
+		});
+	}
 </script>
 <script src="../js/wordDetail.js" th:inline="javascript"></script>
 

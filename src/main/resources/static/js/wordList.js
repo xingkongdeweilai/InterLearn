@@ -2,22 +2,39 @@
  * 操作wordList页面
  */
 
+/**
+ * 分页
+ */
+//layui.use('laypage', function(){
+//  var laypage = layui.laypage;
+//  
+//  //执行一个laypage实例
+//  laypage.render({
+//    elem: 'test3' //注意，这里的 test1 是 ID，不用加 # 号
+//    ,count: 50 //数据总数，从服务端得到
+//  });
+//});
 
 /**
  * 操作表格
  */
-layui.use('table', function(){
-  var table = layui.table;
+layui.use(['table','laypage'], function(){
+  var table = layui.table
+  ,laypage = layui.laypage;
   
   //渲染表格
   table.render({
 	    elem: '#test3'
 	    ,url: '/interLearn/word/wordList' //数据接口
-	    ,page: true //开启分页
+//	    ,page: {
+//	    	count:60
+//	    	,limit:5
+//	    	,gourps:1
+//	    } //开启分页
 	    ,initSort:{
 	    	field:'wordname'
 	    	,type:'asc'
-	    }
+	    }//初始排序
 	    ,response:{
 	    	statusCode:99
 	    }
@@ -31,13 +48,32 @@ layui.use('table', function(){
 	    ]]
 	  });
   
+//执行一个laypage实例
+  laypage.render({
+    elem: 'test3' //注意，这里的 test1 是 ID，不用加 # 号
+    ,count: 51 //数据总数，从服务端得到
+    ,layout: ['count', 'prev', 'page', 'next', 'skip','refresh'] //自定义分页布局
+  	,first: false //不显示首页
+    ,last: false //不显示尾页
+    ,jump:function(obj, first){
+        //obj包含了当前分页的所有参数，比如：
+        console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+        console.log(obj.limit); //得到每页显示的条数
+        
+        //首次不执行
+        if(!first){
+          //do something
+        }
+      }
+  });
+  
   //监听单词单元格编辑
   table.on('edit(test3)', function(obj){
     var value = obj.value //得到修改后的值
     ,data = obj.data //得到所在行所有键值
     ,field = obj.field; //得到字段
     $.ajax({
-		type:"post",
+		type:"get",
 		url:"/interLearn/word/updateWord",
 		data:data,
 		success:function(data){
@@ -106,7 +142,7 @@ layui.use('table', function(){
             layer.close(index);
             data.word_describe=value;
             $.ajax({
-        		type:"post",
+        		type:"get",
         		url:"/interLearn/word/updateWord",
         		data:data,
         		success:function(result){
@@ -128,7 +164,7 @@ layui.use('table', function(){
             layer.close(index);
             data.word_translate=value;
             $.ajax({
-        		type:"post",
+        		type:"get",
         		url:"/interLearn/word/updateWord",
         		data:data,
         		success:function(result){
@@ -158,6 +194,9 @@ layui.use('table', function(){
       var checkStatus = table.checkStatus('test3');
       layer.msg(checkStatus.isAll ? '全选': '未全选')
     }
+    ,addNewWord: function(){//添加新单词
+    	$(location).attr('href', encodeURI('/interLearn/word/queryDetailById?word_id=0'));
+    }
   };
   
   $('.demoTable .layui-btn').on('click', function(){
@@ -179,6 +218,7 @@ layui.use('element', function(){
 	  });
 });
 
+//json数组转换成字符串
 function jsonarrayToStr(jsonarray){
 	var result="";
 	for(var i in jsonarray){
