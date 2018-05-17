@@ -9,6 +9,7 @@
 7、表格样式
 8、个人信息
 9、添加单词验证单词有效性
+10、将iframe替代掉
 
 遇到的问题以及解决方式
 1、验证登录用的ajax导致后台处理数据后无法跳转页面，所以放弃了ajax请求，改用$("form").submit();
@@ -21,3 +22,4 @@
 8、wordList跳转到wordDetail传参问题，向controller层传值时用?的形式
 9、在单词详情页面由于例句有多条，jsonArray设置三条，没有的用空字符串表示
 10、分页，layui数据表格分页都是已经封装好的，233
+11、代替iframe，$.get('a.html',function(data){$('#body').html(data)});a.html中写具体网页以及JavaScript。

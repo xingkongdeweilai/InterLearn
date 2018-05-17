@@ -1,0 +1,79 @@
+<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+<div id="root">
+	<div class="layui-card">
+	  <div class="layui-card-header layui-bg-blue"><p>卡片面板</p></div>
+	</div>
+	<div class="layui-card" v-if="show1">
+	  <div class="layui-card-header layui-bg-green">卡片面板</div>
+	  <div class="layui-card-body layui-bg-gray">
+	    卡片式面板面板通常用于非白色背景色的主体内<br>
+	    从而映衬出边框投影
+	  </div>
+	</div>
+	<div class="layui-card" v-if="show2">
+	  <div class="layui-card-header layui-bg-green">卡片面板</div>
+	  <div class="layui-card-body layui-bg-gray">
+	    卡片式面板面板通常用于非白色背景色的主体内<br>
+	    从而映衬出边框投影
+	  </div>
+	</div>
+	<div class="layui-card" v-if="show3">
+	  <div class="layui-card-header layui-bg-green">卡片面板</div>
+	  <div class="layui-card-body layui-bg-gray">
+	    卡片式面板面板通常用于非白色背景色的主体内<br>
+	    从而映衬出边框投影
+	  </div>
+	</div>
+	<button @click="change" id="aaa"></button>
+</div>
+<script type="text/javascript">
+	layui.use(['element','util'], function(){
+	  var element = layui.element
+	  ,util = layui.util;
+	  
+	  util.fixbar({
+	    bar1: '&#xe625;'
+	    ,bar2: '&#xe623;'
+	    ,click: function(type){
+	      if(type === 'bar1'){
+	      	$('#aaa').click();
+	      }else if(type='bar2'){
+	      	alert('我认识这个单词了');
+	      }
+	    }
+	    ,css:{bottom:350}
+	  });
+	});
+	
+	new Vue({
+		el:"#root",
+		data:{
+			flag3:3,
+			flag2:2,
+			flag1:1,
+			count:0
+		},
+		methods:{
+			change:function(){
+				this.count++;
+			}
+		},
+		computed:{
+			show3:function(){
+				return this.count>=this.flag3;
+			},
+			show2:function(){
+				return this.count>=this.flag2;
+			},
+			show1:function(){
+				return this.count>=this.flag1;
+			}
+		}
+//		watch:{
+//			fullName:function(){
+//				this.count++;
+//			}
+//		}
+	});
+</script>
+	

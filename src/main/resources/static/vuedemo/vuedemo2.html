@@ -10,8 +10,8 @@
 			<!--<div v-bind:title="title">hello world</div>-->
 			<!--	v-bind:等价于:	-->
 			<div :title="title">hello world</div>
-			<input v-model="content"/>
-			<div>{{content}}</div>
+			<input v-model="content[0].a"/>
+			<div>{{count}}</div>
 		</div>
 		
 		<script type="text/javascript">
@@ -19,7 +19,16 @@
 				el:"#root",
 				data:{
 					title:"this is hello world",
-					content:"this is content"
+					content:[{
+						a:2,
+						b:3
+					}],
+					index:0
+				},
+				computed:{
+					count:function(){
+						return this.content[this.index].b;
+					}
 				}
 			})
 		</script>
