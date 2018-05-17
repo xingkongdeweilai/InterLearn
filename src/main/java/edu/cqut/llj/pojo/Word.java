@@ -35,6 +35,16 @@ public class Word {
 
 	public Word() {
 	}
+    public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	private Integer status;
+
 
 	public Integer getWord_id() {
 		return word_id;
@@ -115,15 +125,14 @@ public class Word {
 	public void setWordname(String wordname) {
 		this.wordname = wordname;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Word [word_id=" + word_id + ", word_describe=" + word_describe + ", word_translate=" + word_translate
 				+ ", word_example_cn1=" + word_example_cn1 + ", word_example_cn2=" + word_example_cn2
 				+ ", word_example_cn3=" + word_example_cn3 + ", word_example_en1=" + word_example_en1
 				+ ", word_example_en2=" + word_example_en2 + ", word_example_en3=" + word_example_en3 + ", wordname="
-				+ wordname + "]";
+				+ wordname + ", status=" + status + "]";
 	}
 
-    
 }

@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import edu.cqut.llj.enums.ResultEnum;
+import edu.cqut.llj.exception.GirlException;
+
 @Aspect
 @Component
 /**
@@ -23,9 +26,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  */
 public class HttpAspect {
 	
-	private final static Logger LOGGER = LoggerFactory.getLogger(HttpAspect.class);
+	private final static Logger logger = LoggerFactory.getLogger(HttpAspect.class);
 	
-	@Pointcut("execution(public * edu.cqut.llj.controller.GirlController.*(..))")
+	@Pointcut("execution(public * edu.cqut.llj.controller.WordController.*(..))")
 	public void log(){
 	}
 	
@@ -33,25 +36,32 @@ public class HttpAspect {
 	public void doBefore(JoinPoint joinPoint){
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		HttpServletRequest req = attributes.getRequest();
+		//登录账户
+		try {
+			logger.info(req.getSession().getAttribute("user").toString());
+		} catch (NullPointerException e) {
+			throw new GirlException(ResultEnum.USER_LOGIN_NULL);
+		}
+		
 		//url
-		LOGGER.info("url={}",req.getRequestURL());
+		logger.info("url={}",req.getRequestURL());
 		//method
-		LOGGER.info("method={}",req.getMethod());
+		logger.info("method={}",req.getMethod());
 		//ip
-		LOGGER.info("ip={}",req.getRemoteAddr());
+		logger.info("ip={}",req.getRemoteAddr());
 		//类方法
-		LOGGER.info("class_metho={}",joinPoint.getSignature().getDeclaringTypeName()+"."+joinPoint.getSignature().getName());
+		logger.info("class_metho={}",joinPoint.getSignature().getDeclaringTypeName()+"."+joinPoint.getSignature().getName());
 		//参数
-		LOGGER.info("args={}",joinPoint.getArgs());
+		logger.info("args={}",joinPoint.getArgs());
 	}
 	
 	@After("log()")
 	public void doAfter(){
-		LOGGER.info("222222222");
+		logger.info("222222222");
 	}
 	
 	@AfterReturning(returning="object",pointcut="log()")
 	public void doAfterReturning(Object object){
-		LOGGER.info("response={}", object.toString());
+		logger.info("response={}", object.toString());
 	}
 }

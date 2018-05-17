@@ -18,33 +18,9 @@
 /**
  * 操作表格
  */
-layui.use(['table','laypage'], function(){
-  var table = layui.table
-  ,laypage = layui.laypage;
-  
-  //渲染表格
-  table.render({
-	    elem: '#test3'
-	    ,url: '/interLearn/word/wordList' //数据接口
-	    ,page: {
-	    	 layout: ['prev', 'page', 'next', 'skip', 'count']
-	    } //开启分页
-	    ,initSort:{
-	    	field:'wordname'
-	    	,type:'asc'
-	    }//初始排序
-	    ,response:{
-	    	statusCode:99
-	    }
-	    ,cols: [[ //表头
-	       {type:'checkbox'}
-	      ,{field:'word_id', width:50,minWidth:50,title:"序号",type:'numbers'}
-	      ,{field:'wordname', width:120, sort: true, edit: 'text',title:"单词"}
-	      ,{field:'word_describe',width:360,event: 'setDescribe', minWidth: 150,title:"描述"}
-	      ,{field:'word_translate',width:360,event: 'setTranslate',title:"翻译"} 
-	      ,{fixed: 'right', align:'center', toolbar: '#barDemo'}
-	    ]]
-	  });
+layui.use(['table'], function(){
+  var table = layui.table;
+  renderTable(table);
   
 //执行一个laypage实例
 //  laypage.render({
@@ -124,8 +100,20 @@ layui.use(['table','laypage'], function(){
 //    	});
     	
     } else if(obj.event === 'del'){
-      layer.confirm('真的删除行么', function(index){
-        obj.del();
+      layer.confirm('真的删除'+data.wordname+'吗', function(index){
+    	  $.ajax({
+				type:"get",
+				url:"/interLearn/word/deleteWord",
+				data:data,
+				success:function(result){
+					renderTable(table);
+					layer.msg(result.data.wordname+"删除成功");
+				},
+				error:function(result){
+					layer.msg(result.msg);
+				}
+			});
+    	  
         layer.close(index);
       });
     } else if(obj.event === 'edit'){
@@ -216,7 +204,39 @@ layui.use('element', function(){
 	  });
 });
 
-//json数组转换成字符串
+/**
+ * 渲染表格
+ */
+function renderTable(table){
+	table.render({
+		elem: '#test3'
+		,url: '/interLearn/word/wordList' //数据接口
+		,page: {
+			layout: ['prev', 'page', 'next', 'skip', 'count']
+		} //开启分页
+		,initSort:{
+			field:'wordname'
+			,type:'asc'
+		}//初始排序
+		,response:{
+			statusCode:99
+		}
+		,cols: [[ //表头
+				{type:'checkbox'}
+				,{field:'word_id', width:50,minWidth:50,title:"序号",type:'numbers'}
+				,{field:'wordname', width:120, sort: true, edit: 'text',title:"单词"}
+				,{field:'word_describe',width:360,event: 'setDescribe', minWidth: 150,title:"描述"}
+				,{field:'word_translate',width:360,event: 'setTranslate',title:"翻译"} 
+				,{fixed: 'right', align:'center', toolbar: '#barDemo'}
+			]]
+		});
+}
+
+/**
+ * json数组转换成字符串
+ * @param jsonarray
+ * @returns {String}
+ */
 function jsonarrayToStr(jsonarray){
 	var result="";
 	for(var i in jsonarray){

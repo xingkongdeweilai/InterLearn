@@ -64,7 +64,7 @@ public class UserController {
 		String password = user.getPassword();
 		//用户名或密码为空，直接返回null
 		if(username==null||password==null){
-			return null;
+			return "html/login";
 		}
 		User resultUser = userService.queryUserByLogin(username,password);
 		if(resultUser!=null){
@@ -81,7 +81,7 @@ public class UserController {
 				setUserInfo(resultJson);
 				return "html/admin/index";
 			}else{
-				return "html/index";
+				return "html/user/index";
 			}
 		}
 		model.addAttribute("error", ResultEnum.LOGIN_ERROR.getMsg());
@@ -106,6 +106,11 @@ public class UserController {
 		return "html/regester";
 	}
 	
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest req,Model model){
+		req.getSession().setAttribute("user", null);
+		return "html/login";
+	}
 	
 
 	public JSONObject getUserInfo() {

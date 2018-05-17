@@ -44,6 +44,11 @@ public class Word {
 	private String word_example_en3;
 	private String word_example_cn3;
 
+	/**
+	 * 单词状态，0：可用，1：已删除
+	 */
+	private Integer status;
+	
 	public Word() {
 	}
 
@@ -127,12 +132,20 @@ public class Word {
 		this.word_example_cn3 = word_example_cn3;
 	}
 
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "Word [wordId=" + wordId + ", wordname=" + wordname + ", wordDescribe=" + wordDescribe
 				+ ", wordTranslate=" + wordTranslate + ", word_example_en1=" + word_example_en1 + ", word_example_cn1="
 				+ word_example_cn1 + ", word_example_en2=" + word_example_en2 + ", word_example_cn2=" + word_example_cn2
-				+ ", word_example_en3=" + word_example_en3 + ", word_example_cn3=" + word_example_cn3 + "]";
+				+ ", word_example_en3=" + word_example_en3 + ", word_example_cn3=" + word_example_cn3 + ", status="
+				+ status + "]";
 	}
-
 }

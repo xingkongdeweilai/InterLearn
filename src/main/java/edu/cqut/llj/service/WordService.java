@@ -53,12 +53,18 @@ public class WordService {
 	}
 
 	public int addNewWord(Word word) {
+		int result = 0;
 		//去掉wordname两端空白
 		word.setWordname(word.getWordname().trim());
 		if("".equals(word.getWordname())){
 			throw new GirlException(ResultEnum.ADD_WORDNAME_NULL);
 		}
-		return wordDao.addNewWord(word);
+		try{
+			result = wordDao.addNewWord(word);
+		}catch(Exception e){
+			throw new GirlException(ResultEnum.ADD_WORD_ERROR);
+		}
+		return result;
 	}
 
 	/**
@@ -71,6 +77,8 @@ public class WordService {
 	public JSONArray queryWordListPaged(Word word, Integer page, Integer limit) {
 		PageHelper.startPage(page,limit);
 		Example example = new Example(Word.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("status", 0);
 		example.orderBy("wordname").asc();
 		List<Word> list = wordDao.queryWordListPaged(example);
 		return JSONArray.fromObject(list);
@@ -82,6 +90,15 @@ public class WordService {
 	 */
 	public Integer getWordListSize() {
 		return wordDao.getWordListSize();
+	}
+	
+	/**
+	 * 删除一个单词
+	 * @param word
+	 * @return
+	 */
+	public boolean deleteWord(Word word){
+		return wordDao.deleteWord(word);
 	}
 
 //	public ThreeWordExample updateWordExample(String cn,String en, Integer word_id) {

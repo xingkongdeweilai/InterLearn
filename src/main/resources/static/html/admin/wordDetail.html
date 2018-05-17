@@ -21,7 +21,7 @@
     <dl class="layui-nav-child">
       <dd><a href="javascript:;">修改信息</a></dd>
       <dd><a href="javascript:;">安全管理</a></dd>
-      <dd><a href="javascript:;">退了</a></dd>
+      <dd><a href="javascript:logout();">退了</a></dd>
     </dl>
   </li>
   <li class="layui-nav-item">
@@ -136,9 +136,9 @@
 			data:word,
 			success:function(data){
 				if(data.code==99){
-					alert('操作成功');
+					alert("操作成功");
 				}else{
-					alert('操作失败，'+data.msg);
+					alert("操作失败，该单词已存在");
 				}
 			}
 		});
@@ -161,6 +161,14 @@
 	}
 </script>
 <script src="../js/wordDetail.js" th:inline="javascript"></script>
+<script type="text/javascript">
+
+	//登出
+	function logout(){
+		window.parent.location.href='/interLearn/user/logout';
+//		$(location).attr('href', encodeURI('/interLearn/user/logout'));
+	}
+</script>
 
 </body>
 </html>

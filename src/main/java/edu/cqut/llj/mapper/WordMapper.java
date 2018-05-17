@@ -8,4 +8,6 @@ public interface WordMapper extends MyMapper<Word> {
 	Word queryWordById(Integer word_id);
 
 	Integer getWordListSize();
+
+	void deleteWord(Integer word_id);
 }

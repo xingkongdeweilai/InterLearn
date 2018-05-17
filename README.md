@@ -20,3 +20,4 @@
 7、jquery与layui冲突，解决：换了一个jquery版本，1.9.1
 8、wordList跳转到wordDetail传参问题，向controller层传值时用?的形式
 9、在单词详情页面由于例句有多条，jsonArray设置三条，没有的用空字符串表示
+10、分页，layui数据表格分页都是已经封装好的，233

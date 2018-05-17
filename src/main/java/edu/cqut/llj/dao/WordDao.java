@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
+import edu.cqut.llj.enums.ResultEnum;
+import edu.cqut.llj.exception.GirlException;
 import edu.cqut.llj.mapper.WordMapper;
 import edu.cqut.llj.pojo.Word;
 import edu.cqut.llj.vo.ThreeWordExample;
@@ -61,6 +65,11 @@ public class WordDao {
 		return wordMapper.queryWordById(word_id);
 	}
 
+	/**
+	 * 添加新单词
+	 * @param word
+	 * @return
+	 */
 	public int addNewWord(Word word) {
 		return wordMapper.insertSelective(word);
 	}
@@ -81,6 +90,16 @@ public class WordDao {
 	 */
 	public Integer getWordListSize() {
 		return wordMapper.getWordListSize();
+	}
+	
+	/**
+	 * 删除一个单词（非物理删除）
+	 * @param word
+	 * @return
+	 */
+	public boolean deleteWord(Word word){
+		wordMapper.deleteWord(word.getWord_id());
+		return true;
 	}
 
 	/**

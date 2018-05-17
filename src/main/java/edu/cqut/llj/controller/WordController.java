@@ -124,6 +124,16 @@ public class WordController {
 		return "html/error";
     }
 	
+	@SuppressWarnings("rawtypes")
+	@GetMapping("/deleteWord")
+	@ResponseBody
+	public Result deleteWord(@Valid Word word){
+		if(wordService.deleteWord(word)){
+			return ResultUtil.success(word);
+		}
+		return ResultUtil.error(ResultEnum.DELETE_WORD_ERROR.getCode(), ResultEnum.DELETE_WORD_ERROR.getMsg());
+	}
+	
 //	@GetMapping("/updateWordAndExample")
 //	public String updateWordAndExample(@Valid Word word,Model model){
 //		model.addAttribute("user", userController.getUserInfo());
