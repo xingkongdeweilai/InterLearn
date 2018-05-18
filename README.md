@@ -23,3 +23,6 @@
 9、在单词详情页面由于例句有多条，jsonArray设置三条，没有的用空字符串表示
 10、分页，layui数据表格分页都是已经封装好的，233
 11、代替iframe，$.get('a.html',function(data){$('#body').html(data)});a.html中写具体网页以及JavaScript。
+
+UserAndWord表
+字段：user_id,word_id,relation(关系程度0-3)

@@ -1,7 +1,6 @@
 package edu.cqut.llj.controller;
 
-import java.util.List;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -10,20 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
-
 import edu.cqut.llj.enums.ResultEnum;
+import edu.cqut.llj.po.User;
 import edu.cqut.llj.pojo.Word;
 import edu.cqut.llj.service.WordService;
 import edu.cqut.llj.utils.ResultUtil;
 import edu.cqut.llj.vo.Result;
-import edu.cqut.llj.vo.ThreeWordExample;
-import edu.cqut.llj.vo.WordAndWordExample;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -124,6 +119,11 @@ public class WordController {
 		return "html/error";
     }
 	
+	/**
+	 * 管理员删除单词
+	 * @param word
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
 	@GetMapping("/deleteWord")
 	@ResponseBody
@@ -132,6 +132,26 @@ public class WordController {
 			return ResultUtil.success(word);
 		}
 		return ResultUtil.error(ResultEnum.DELETE_WORD_ERROR.getCode(), ResultEnum.DELETE_WORD_ERROR.getMsg());
+	}
+	
+	/**
+	 * 返回每日单词
+	 * @param req
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@GetMapping("/getRememberWord")
+	@ResponseBody
+	public Result getRememberWord(HttpServletRequest req){
+		Integer user_id = ((User)req.getSession().getAttribute("user")).getUserId();
+		JSONObject lastWordList = (JSONObject) req.getSession().getAttribute("today");
+		JSONObject jsonObject = wordService.getRememberWord(user_id,lastWordList);
+		if(jsonObject!=null){
+			//为了下次判断是否查询做准备
+			req.getSession().setAttribute("today", jsonObject);
+			return ResultUtil.success(jsonObject);
+		}
+		return ResultUtil.error(ResultEnum.EVERY_WORD_ERROR.getCode(), ResultEnum.EVERY_WORD_ERROR.getMsg());
 	}
 	
 //	@GetMapping("/updateWordAndExample")

@@ -13,6 +13,25 @@
     <result column="word_example_en2" jdbcType="VARCHAR" property="wordExampleEn2" />
     <result column="word_example_en3" jdbcType="VARCHAR" property="wordExampleEn3" />
   </resultMap>
+  
+  <resultMap id="UserResultMap" type="edu.cqut.llj.pojo.User" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="birth_day" property="birthDay" jdbcType="TIMESTAMP" />
+    <result column="e_mail" property="eMail" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="INTEGER" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="WUResultMap" type="edu.cqut.llj.pojo.WordAndUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="relationship" property="relationship" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="word_id" property="wordId" jdbcType="INTEGER" />
+  </resultMap>
+  
   <!-- parameterType="java.lang.Integer"  -->
   	<!-- 查询所有单词 -->
 	<!-- <select id="wordAndExample" resultType="edu.cqut.llj.vo.WordAndWordExample"> 
@@ -43,11 +62,21 @@
 		from word
 		where status = 0
 	</select>
+	<!-- 删除单词 -->
 	<update id="deleteWord">
 		update word
 		set status=1
 		where word_id=#{0}
 	</update>
+	<!-- 方案1：在word_and_user查询1/2，查询条件：relation<3，即正在学习中的词 -->
+	<select id="queryLearningWord" resultType="edu.cqut.llj.pojo.Word" parameterType="java.lang.Integer"> 
+		SELECT w.*
+		from word_and_user wu
+		join `user` u on u.user_id=wu.user_id
+		join word w on w.word_id=wu.word_id
+		where wu.user_id=#{user_id}
+		ORDER BY RAND() LIMIT #{limit}
+	</select>
 	<!-- 根据word_id修改wordExample -->
 	<!-- <update id="updateWordExample">
 		update word_example

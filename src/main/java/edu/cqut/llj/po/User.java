@@ -39,6 +39,9 @@ public class User {
 	@JsonInclude(Include.NON_NULL)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date birthDay;
+//	@ManyToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+//	@JoinTable(name="word",joinColumns=@JoinColumn(name="user_id",referencedColumnName = "id"),inverseJoinColumns=@JoinColumn(name="word_id",referencedColumnName="id"))
+//	private List<Word> wordList = new ArrayList<>();
 	/**
 	 * 用户类型
 	 * 0：超级管理员
@@ -96,6 +99,14 @@ public class User {
 	public void setRole(Integer role) {
 		this.role = role;
 	}
+	
+	
+//	public List<Word> getWordList() {
+//		return wordList;
+//	}
+//	public void setWordList(List<Word> wordList) {
+//		this.wordList = wordList;
+//	}
 	@Override
 	public String toString() {
 		return "User [id=" + userId + ", username=" + username + ", password=" + password + ", sex=" + sex + ", mobile="

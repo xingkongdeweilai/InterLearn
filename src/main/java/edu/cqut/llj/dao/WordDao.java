@@ -7,15 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
-import edu.cqut.llj.enums.ResultEnum;
-import edu.cqut.llj.exception.GirlException;
 import edu.cqut.llj.mapper.WordMapper;
 import edu.cqut.llj.pojo.Word;
-import edu.cqut.llj.vo.ThreeWordExample;
-import edu.cqut.llj.vo.WordAndWordExample;
-import net.sf.json.JSONArray;
 import tk.mybatis.mapper.entity.Example;
 
 @Component
@@ -100,6 +93,18 @@ public class WordDao {
 	public boolean deleteWord(Word word){
 		wordMapper.deleteWord(word.getWord_id());
 		return true;
+	}
+
+	/**
+	 * 方案1：在word_and_user查询1/2，查询条件：relation<3，即正在学习中的词
+	 * @param user_id
+	 * @param i
+	 * @return
+	 */
+	public List<Word> queryLearningWord(Integer user_id, Integer limit) {
+		List<Word> result = wordMapper.queryLearningWord(user_id,limit);
+		logger.info(result.toString());
+		return result;
 	}
 
 	/**

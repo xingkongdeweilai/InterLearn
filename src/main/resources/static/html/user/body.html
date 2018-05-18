@@ -1,32 +1,56 @@
 <script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
 <div id="root">
-	<div class="layui-card">
-	  <div class="layui-card-header layui-bg-blue"><p>卡片面板</p></div>
+	<div class="layui-card" v-if="show0">
+	  <div class="layui-card-header layui-bg-blue">{{wordname}}</div>
 	</div>
 	<div class="layui-card" v-if="show1">
-	  <div class="layui-card-header layui-bg-green">卡片面板</div>
+	  <div class="layui-card-header layui-bg-green">描述</div>
 	  <div class="layui-card-body layui-bg-gray">
-	    卡片式面板面板通常用于非白色背景色的主体内<br>
-	    从而映衬出边框投影
+		    {{word_describe}}
 	  </div>
 	</div>
 	<div class="layui-card" v-if="show2">
-	  <div class="layui-card-header layui-bg-green">卡片面板</div>
+	  <div class="layui-card-header layui-bg-green">翻译</div>
 	  <div class="layui-card-body layui-bg-gray">
-	    卡片式面板面板通常用于非白色背景色的主体内<br>
-	    从而映衬出边框投影
+		    {{word_translate}}
 	  </div>
 	</div>
 	<div class="layui-card" v-if="show3">
-	  <div class="layui-card-header layui-bg-green">卡片面板</div>
+	  <div class="layui-card-header layui-bg-green">{{word_example_en1}}</div>
 	  <div class="layui-card-body layui-bg-gray">
-	    卡片式面板面板通常用于非白色背景色的主体内<br>
-	    从而映衬出边框投影
+			{{word_example_cn1}}
+	  </div>
+	</div>
+	<div class="layui-card" v-if="show3">
+	  <div class="layui-card-header layui-bg-green">{{word_example_en2}}</div>
+	  <div class="layui-card-body layui-bg-gray">
+			{{word_example_cn2}}
+	  </div>
+	</div>
+	<div class="layui-card" v-if="show3">
+	  <div class="layui-card-header layui-bg-green">{{word_example_en3}}</div>
+	  <div class="layui-card-body layui-bg-gray">
+			{{word_example_cn3}}
 	  </div>
 	</div>
 	<button @click="change" id="aaa"></button>
+	<button @click="bigChange" id="bbb"></button>
 </div>
 <script type="text/javascript">
+	var todayWordList;
+	//预加载每日单词
+	$(function(){
+		$.ajax({
+			type:"get",
+			url:"/interLearn/word/getRememberWord",
+			success:function(data){
+				console.log(data);
+				todayWordList = data.data.todayWordList;
+			}
+		});
+	});
+	
+	
 	layui.use(['element','util'], function(){
 	  var element = layui.element
 	  ,util = layui.util;
@@ -38,7 +62,7 @@
 	      if(type === 'bar1'){
 	      	$('#aaa').click();
 	      }else if(type='bar2'){
-	      	alert('我认识这个单词了');
+	    	$('#bbb').click();
 	      }
 	    }
 	    ,css:{bottom:350}
@@ -51,29 +75,89 @@
 			flag3:3,
 			flag2:2,
 			flag1:1,
-			count:0
+			flag0:0,
+			flag:-1,
+			/* 第几个单词  */
+			index:0
 		},
 		methods:{
 			change:function(){
-				this.count++;
+				this.flag++;
+			},
+			bigChange:function(){
+				if(this.flag<3){
+					this.flag=3;
+				}else if(this.index<this.todayWordList.size-1){
+					this.flag=-1;
+					this.index++;
+				}else{
+					alert('这个单词学完了，可以跳转页面了');
+				}
 			}
 		},
 		computed:{
 			show3:function(){
-				return this.count>=this.flag3;
+				return this.flag>=this.flag3;
 			},
 			show2:function(){
-				return this.count>=this.flag2;
+				return this.flag>=this.flag2;
 			},
 			show1:function(){
-				return this.count>=this.flag1;
+				return this.flag>=this.flag1;
+			},
+			show0:function(){
+				return this.flag>=this.flag0;
+			},
+			/* 今日单词列表 */
+			todayWordList:function(){
+				return todayWordList;
+			},
+			wordname:function(){
+				return this.todayWordList[this.index].wordname;
+			},
+			word_describe:function(){
+				return this.todayWordList[this.index].word_describe;
+			},
+			word_translate:function(){
+				return this.todayWordList[this.index].word_translate;
+			},
+			word_example_en1:function(){
+				var result = this.todayWordList[this.index].word_example_en1;
+				return resolveEmptyEn(result);
+			},
+			word_example_cn1:function(){
+				var result = this.todayWordList[this.index].word_example_cn1;
+				return resolveEmptyCn(result);
+			},
+			word_example_en2:function(){
+				var result = this.todayWordList[this.index].word_example_en2;
+				return resolveEmptyEn(result);
+			},
+			word_example_cn2:function(){
+				var result = this.todayWordList[this.index].word_example_cn2;
+				return resolveEmptyCn(result);
+			},
+			word_example_en3:function(){
+				var result = this.todayWordList[this.index].word_example_en3;
+				return resolveEmptyEn(result);
+			},
+			word_example_cn3:function(){
+				var result = this.todayWordList[this.index].word_example_cn3;
+				return resolveEmptyCn(result);
 			}
 		}
 //		watch:{
 //			fullName:function(){
-//				this.count++;
+//				this.flag++;
 //			}
 //		}
 	});
+	
+	function resolveEmptyEn(result){
+		return result==''?'Yingyingying,the administrator is lazy, so there is no content here':result
+	}
+	function resolveEmptyCn(result){
+		return result==''?'嘤嘤嘤，管理员偷懒了，所以这里没有内容':result
+	}
 </script>
 	

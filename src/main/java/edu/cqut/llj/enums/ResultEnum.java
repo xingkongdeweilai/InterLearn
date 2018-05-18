@@ -14,6 +14,7 @@ public enum ResultEnum {
 	ADD_WORDNAME_NULL(108,"单词名为空"),
 	DELETE_WORD_ERROR(109,"单词删除失败"),
 	USER_LOGIN_NULL(110,"用户未登录"),
+	EVERY_WORD_ERROR(111,"每日单词查询失败"),
 	
 	SUPER_ADMIN(0,"超级管理员"),
 	ADMIN(1,"管理员"),

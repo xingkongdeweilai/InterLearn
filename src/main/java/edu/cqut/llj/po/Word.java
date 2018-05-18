@@ -1,9 +1,13 @@
 package edu.cqut.llj.po;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -48,6 +52,8 @@ public class Word {
 	 * 单词状态，0：可用，1：已删除
 	 */
 	private Integer status;
+//	@ManyToMany(mappedBy="wordList")
+//	private List<User> userList = new ArrayList<>();
 	
 	public Word() {
 	}
@@ -139,6 +145,14 @@ public class Word {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
+	
+//	public List<User> getUserList() {
+//		return userList;
+//	}
+//
+//	public void setUserList(List<User> userList) {
+//		this.userList = userList;
+//	}
 
 	@Override
 	public String toString() {
