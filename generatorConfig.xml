@@ -15,7 +15,7 @@
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/dbinterLearn"
                         userId="root"
-                        password="ljyx02089701">
+                        password="LJYX97010208">
         </jdbcConnection>
 
         <!-- 对于生成的pojo所在包 -->

@@ -14,6 +14,7 @@ import edu.cqut.llj.dao.WordDao;
 import edu.cqut.llj.enums.ResultEnum;
 import edu.cqut.llj.exception.GirlException;
 import edu.cqut.llj.pojo.Word;
+import edu.cqut.llj.pojo.WordAndUser;
 import edu.cqut.llj.properties.WordProperties;
 import edu.cqut.llj.utils.CommonUtil;
 import edu.cqut.llj.vo.ThreeWordExample;
@@ -107,11 +108,9 @@ public class WordService {
 	}
 
 	/**
-	 * 返回每日单词
-	 * 三个查询方案
+	 * 返回每日单词，三个查询方案
 	 * 1、在word_and_user查询1/2，查询条件：relation<3，即正在学习中的词
-	 * 2、在word中查询，查询量补齐，查询条件：在word_and_user中没有关系，即生词
-	 * 3、用户学完所有单词，直接在word中查，查询条件：无
+	 * 2、在word中查询，查询量补齐，查询条件：在word_and_user中relation<3
 	 * @param user_id
 	 * @param lastWordList 
 	 * @return
@@ -125,29 +124,48 @@ public class WordService {
 		}
 		
 		Integer size1 = 0;
-		Integer size2 = 0;
 		List<Word> plan1 = new ArrayList<>();
 		List<Word> plan2 = new ArrayList<>();
-		List<Word> plan3 = null;
 		Integer wordNumber = Integer.parseInt(wordProperties.getEveryWord());
 		plan1 = wordDao.queryLearningWord(user_id,wordNumber/2);
 		size1 = plan1.size();
-//		plan2 = wordDao.queryNewWord(user_id,wordNumber-size1);
-		size2 = plan2.size();
-		if(size1+size2<wordNumber){
-//			plan3 = wordDao.queryAny(wordNumber-size1-size2);
-		}
+		plan2 = wordDao.queryNewWord(wordNumber-size1);
 		
 		plan1.addAll(plan2);
-		if(plan3!=null){
-			plan1.addAll(plan3);
-		}
 		JSONArray todayWordList = JSONArray.fromObject(plan1);
 		JSONObject resultJson = new JSONObject();
 		resultJson.put("todayWordList", todayWordList);
 		resultJson.put("getNow", CommonUtil.getNow());
 		logger.info(resultJson.toString());
 		return resultJson;
+	}
+
+	/**
+	 * 更新用户与单词的relationship
+	 * 先查询中间表word_and_user中是否有用户与单词的联系
+	 * 如果没有，中间表添加一条新数据
+	 * 如果有，且relationship<3,relationship+1，没有，不操作
+	 * @param user_id
+	 * @param word_id
+	 * @return
+	 */
+	public boolean updateWordUserRelation(Integer user_id, Integer word_id) {
+		WordAndUser wu = wordDao.queryRelation(user_id,word_id);
+		//没有联系就新增
+		if(wu==null){
+			wu = new WordAndUser();
+			wu.setUser_id(user_id);
+			wu.setWord_id(word_id);
+			wu.setRelationship(0);
+			wordDao.addRelation(wu);
+		//正在学的单词relationship+1
+		}else if(wu.getRelationship()<3){
+			logger.info(wu.toString());
+			wu.setRelationship(wu.getRelationship()+1);
+			logger.info(wu.toString());
+			wordDao.updateWordUserRelation(wu);
+		}
+		return true;
 	}
 	
 //	public ThreeWordExample updateWordExample(String cn,String en, Integer word_id) {

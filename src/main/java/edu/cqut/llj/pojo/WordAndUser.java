@@ -10,64 +10,48 @@ public class WordAndUser {
     private Integer relationship;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private Integer user_id;
 
     @Column(name = "word_id")
-    private Integer wordId;
+    private Integer word_id;
 
-    /**
-     * @return id
-     */
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    /**
-     * @param id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    /**
-     * @return relationship
-     */
-    public Integer getRelationship() {
-        return relationship;
-    }
+	public Integer getRelationship() {
+		return relationship;
+	}
 
-    /**
-     * @param relationship
-     */
-    public void setRelationship(Integer relationship) {
-        this.relationship = relationship;
-    }
+	public void setRelationship(Integer relationship) {
+		this.relationship = relationship;
+	}
 
-    /**
-     * @return user_id
-     */
-    public Integer getUserId() {
-        return userId;
-    }
+	public Integer getUser_id() {
+		return user_id;
+	}
 
-    /**
-     * @param userId
-     */
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+	public void setUser_id(Integer user_id) {
+		this.user_id = user_id;
+	}
 
-    /**
-     * @return word_id
-     */
-    public Integer getWordId() {
-        return wordId;
-    }
+	public Integer getWord_id() {
+		return word_id;
+	}
 
-    /**
-     * @param wordId
-     */
-    public void setWordId(Integer wordId) {
-        this.wordId = wordId;
-    }
+	public void setWord_id(Integer word_id) {
+		this.word_id = word_id;
+	}
+
+	@Override
+	public String toString() {
+		return "WordAndUser [id=" + id + ", relationship=" + relationship + ", user_id=" + user_id + ", word_id="
+				+ word_id + "]";
+	}
+
+   
 }

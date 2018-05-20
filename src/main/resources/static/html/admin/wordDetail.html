@@ -135,11 +135,15 @@
 			url:"/interLearn/word/updateWord",
 			data:word,
 			success:function(data){
+				/* console.log(data);
 				if(data.code==99){
 					alert("操作成功");
 				}else{
 					alert("操作失败，该单词已存在");
-				}
+				} */
+			},
+			error:function(){
+				alert("操作成功");
 			}
 		});
 	}

@@ -33,8 +33,8 @@
 			{{word_example_cn3}}
 	  </div>
 	</div>
-	<button @click="change" id="aaa"></button>
-	<button @click="bigChange" id="bbb"></button>
+	<button @click="change" id="aaa">不认识</button>
+	<button @click="bigChange" id="bbb">认识</button>
 </div>
 <script type="text/javascript">
 	var todayWordList;
@@ -82,16 +82,27 @@
 		},
 		methods:{
 			change:function(){
-				this.flag++;
+				if(this.flag<3){
+					this.flag++;
+				}else{
+					$('#bbb').click();
+				}
 			},
 			bigChange:function(){
 				if(this.flag<3){
 					this.flag=3;
-				}else if(this.index<this.todayWordList.size-1){
-					this.flag=-1;
-					this.index++;
 				}else{
-					alert('这个单词学完了，可以跳转页面了');
+					$.ajax({
+						type:"get",
+						url:"/interLearn/word/updateWordUserRelation",
+						data:this.currentWord
+					});
+					if(this.index<this.todayWordList.length-1){
+						this.flag=-1;
+						this.index++;
+					}else{
+						alert("恭喜，今日单词已学完");
+					}
 				}
 			}
 		},
@@ -112,37 +123,41 @@
 			todayWordList:function(){
 				return todayWordList;
 			},
+			/* 当前学习的单词 */
+			currentWord:function(){
+				return this.todayWordList[this.index];
+			},
 			wordname:function(){
-				return this.todayWordList[this.index].wordname;
+				return this.currentWord.wordname;
 			},
 			word_describe:function(){
-				return this.todayWordList[this.index].word_describe;
+				return this.currentWord.word_describe;
 			},
 			word_translate:function(){
-				return this.todayWordList[this.index].word_translate;
+				return this.currentWord.word_translate;
 			},
 			word_example_en1:function(){
-				var result = this.todayWordList[this.index].word_example_en1;
+				var result = this.currentWord.word_example_en1;
 				return resolveEmptyEn(result);
 			},
 			word_example_cn1:function(){
-				var result = this.todayWordList[this.index].word_example_cn1;
+				var result = this.currentWord.word_example_cn1;
 				return resolveEmptyCn(result);
 			},
 			word_example_en2:function(){
-				var result = this.todayWordList[this.index].word_example_en2;
+				var result = this.currentWord.word_example_en2;
 				return resolveEmptyEn(result);
 			},
 			word_example_cn2:function(){
-				var result = this.todayWordList[this.index].word_example_cn2;
+				var result = this.currentWord.word_example_cn2;
 				return resolveEmptyCn(result);
 			},
 			word_example_en3:function(){
-				var result = this.todayWordList[this.index].word_example_en3;
+				var result = this.currentWord.word_example_en3;
 				return resolveEmptyEn(result);
 			},
 			word_example_cn3:function(){
-				var result = this.todayWordList[this.index].word_example_cn3;
+				var result = this.currentWord.word_example_cn3;
 				return resolveEmptyCn(result);
 			}
 		}
@@ -160,4 +175,3 @@
 		return result==''?'嘤嘤嘤，管理员偷懒了，所以这里没有内容':result
 	}
 </script>
-	

@@ -68,8 +68,9 @@ public class WordController {
 	@ResponseBody
 	public Result<Word> updateWord(@Valid Word word){
 		if(word.getWord_id()==0){
-			int resultKey = wordService.addNewWord(word);
+			Integer resultKey = wordService.addNewWord(word);
 			if(resultKey>0){
+				logger.info("后台没问题");
 				return ResultUtil.success(resultKey);
 			}
 			return ResultUtil.error(ResultEnum.ADD_WORD_ERROR.getCode(), ResultEnum.ADD_WORD_ERROR.getMsg());
@@ -152,6 +153,23 @@ public class WordController {
 			return ResultUtil.success(jsonObject);
 		}
 		return ResultUtil.error(ResultEnum.EVERY_WORD_ERROR.getCode(), ResultEnum.EVERY_WORD_ERROR.getMsg());
+	}
+	
+	/**
+	 * 更新用户与单词的relationship
+	 * @param word
+	 * @param req
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@GetMapping("/updateWordUserRelation")
+	@ResponseBody
+	public Result updateWordUserRelation(@Valid Word word,HttpServletRequest req){
+		Integer user_id = ((User)req.getSession().getAttribute("user")).getUserId();
+		if(wordService.updateWordUserRelation(user_id,word.getWord_id())){
+			
+		}
+		return null;
 	}
 	
 //	@GetMapping("/updateWordAndExample")

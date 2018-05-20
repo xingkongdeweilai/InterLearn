@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import edu.cqut.llj.mapper.WordAndUserMapper;
 import edu.cqut.llj.mapper.WordMapper;
 import edu.cqut.llj.pojo.Word;
+import edu.cqut.llj.pojo.WordAndUser;
 import tk.mybatis.mapper.entity.Example;
 
 @Component
@@ -18,6 +20,8 @@ public class WordDao {
 //	private WordRepository wordRepository;
 	@Autowired
 	private WordMapper wordMapper;
+	@Autowired
+	private WordAndUserMapper wordAndUserMapper;
 	private static final Logger logger = LoggerFactory.getLogger(WordDao.class);
 
 	/**
@@ -105,6 +109,47 @@ public class WordDao {
 		List<Word> result = wordMapper.queryLearningWord(user_id,limit);
 		logger.info(result.toString());
 		return result;
+	}
+
+	/**
+	 * 方案2：在word中查询，查询量补齐
+	 * @param user_id
+	 * @param i
+	 * @return
+	 */
+	public List<Word> queryNewWord(Integer limit) {
+		List<Word> result = wordMapper.queryNewWord(limit);
+		logger.info(result.toString());
+		return result;
+	}
+
+	/**
+	 * 查询用户与单词关系
+	 * @param user_id
+	 * @param word_id
+	 * @return
+	 */
+	public WordAndUser queryRelation(Integer user_id, Integer word_id) {
+		return wordMapper.queryRelation(user_id,word_id);
+	}
+
+	/**
+	 * 中间表增加联系
+	 * @param user_id
+	 * @param word_id
+	 */
+	public boolean addRelation(WordAndUser wu) {
+		wordAndUserMapper.insert(wu);
+		return true;
+	}
+
+	/**
+	 * 中间表relationship+1
+	 * @param wu
+	 */
+	public boolean updateWordUserRelation(WordAndUser wu) {
+		wordAndUserMapper.updateByPrimaryKey(wu);
+		return true;
 	}
 
 	/**

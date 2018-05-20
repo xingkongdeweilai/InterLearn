@@ -74,8 +74,21 @@
 		from word_and_user wu
 		join `user` u on u.user_id=wu.user_id
 		join word w on w.word_id=wu.word_id
-		where wu.user_id=#{user_id}
+		where wu.user_id=#{user_id} and wu.relationship &lt; 3
 		ORDER BY RAND() LIMIT #{limit}
+	</select>
+	<!-- 方案2：在word中查询，查询量补齐 -->
+	<select id="queryNewWord" resultType="edu.cqut.llj.pojo.Word" parameterType="java.lang.Integer"> 
+		SELECT w.*
+		from word w
+		where w.status=0
+		ORDER BY RAND() LIMIT #{limit}
+	</select>
+	<!-- 查询word与user的联系 -->
+	<select id="queryRelation" resultType="edu.cqut.llj.pojo.WordAndUser" parameterType="java.lang.Integer"> 
+		SELECT *
+		from word_and_user
+		where word_id=#{word_id} and user_id=#{user_id}
 	</select>
 	<!-- 根据word_id修改wordExample -->
 	<!-- <update id="updateWordExample">
