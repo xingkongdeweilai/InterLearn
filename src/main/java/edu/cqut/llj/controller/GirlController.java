@@ -72,7 +72,6 @@ public class GirlController {
 							@RequestParam("age") Integer age){
 		Girl girl = new Girl();
 		girl.setId(id);
-		girl.setCupSize(cupSize);
 		girl.setAge(age);
 		
 		return girlRepository.save(girl);

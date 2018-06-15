@@ -21,4 +21,9 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	 */
 	public User findByeMail(String eMail);
 	
+	/*
+	 * 根据用户ID查找
+	 */
+	public User findByUserId(Integer user_id);
+	
 }

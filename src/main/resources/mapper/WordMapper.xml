@@ -90,6 +90,22 @@
 		from word_and_user
 		where word_id=#{word_id} and user_id=#{user_id}
 	</select>
+	<!-- 用户查询已学会单词-->
+	<select id="queryMyWord" resultType="edu.cqut.llj.pojo.Word" parameterType="java.lang.Integer"> 
+		SELECT w.word_id,w.word_describe,w.word_translate,w.word_example_cn1,w.word_example_cn2,w.word_example_cn3,
+			w.word_example_en1,w.word_example_en2,w.word_example_en3,w.wordname,w.`status`
+		FROM word w JOIN word_and_user wu on w.word_id=wu.word_id
+		where wu.relationship=3 AND wu.user_id=#{user_id}
+		limit #{page},#{limit}
+	</select>
+	<!-- 用户查询生词-->
+	<select id="queryNotebook" resultType="edu.cqut.llj.pojo.Word" parameterType="java.lang.Integer"> 
+		SELECT w.word_id,w.word_describe,w.word_translate,w.word_example_cn1,w.word_example_cn2,w.word_example_cn3,
+			w.word_example_en1,w.word_example_en2,w.word_example_en3,w.wordname,w.`status`
+		FROM word w JOIN word_and_user wu on w.word_id=wu.word_id
+		where wu.relationship &lt; 3 AND wu.user_id=#{user_id}
+		limit #{page},#{limit}
+	</select>
 	<!-- 根据word_id修改wordExample -->
 	<!-- <update id="updateWordExample">
 		update word_example

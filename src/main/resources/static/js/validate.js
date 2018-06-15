@@ -91,7 +91,7 @@ function doSubmit(){
 			data:obj,
 			success:function(data){
 				alert("注册成功，可以登录了");
-				$(location).attr('href', encodeURI('http://127.0.0.1:8081/interLearn/user/login?username='+data.data.username));
+				$(location).attr('href', encodeURI('http://127.0.0.1:8082/interLearn/user/login?username='+data.data.username));
 			}
 		});
 	}else {

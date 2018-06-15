@@ -145,11 +145,12 @@ public class WordController {
 	@ResponseBody
 	public Result getRememberWord(HttpServletRequest req){
 		Integer user_id = ((User)req.getSession().getAttribute("user")).getUserId();
-		JSONObject lastWordList = (JSONObject) req.getSession().getAttribute("today");
-		JSONObject jsonObject = wordService.getRememberWord(user_id,lastWordList);
+//		JSONObject lastWordList = (JSONObject) req.getSession().getAttribute("today");
+		
+		JSONObject jsonObject = wordService.getRememberWord(user_id);
 		if(jsonObject!=null){
-			//为了下次判断是否查询做准备
-			req.getSession().setAttribute("today", jsonObject);
+//			//为了下次判断是否查询做准备
+//			req.getSession().setAttribute("today", jsonObject);
 			return ResultUtil.success(jsonObject);
 		}
 		return ResultUtil.error(ResultEnum.EVERY_WORD_ERROR.getCode(), ResultEnum.EVERY_WORD_ERROR.getMsg());
@@ -171,6 +172,52 @@ public class WordController {
 		}
 		return null;
 	}
+	
+	 /**
+     * 用户查询已学会单词
+     * @return
+     */
+	@SuppressWarnings("unchecked")
+	@GetMapping("/getMyWord")
+    @ResponseBody
+    public Result<Word> getMyWord(HttpServletRequest req
+    		,@RequestParam(value="page", required=false,defaultValue="1") Integer page
+    		,@RequestParam(value="limit", required=false,defaultValue="10") Integer limit){
+		logger.info("page:"+page+" limit:"+limit);
+		Integer user_id = ((User)req.getSession().getAttribute("user")).getUserId();
+		JSONArray wordJson = wordService.queryMyWord(page,limit,user_id);
+    	logger.info(ResultUtil.success(wordJson).toString());
+		return ResultUtil.success(wordJson,wordService.getMyWordListSize(page,limit,user_id));
+    }
+	
+	 /**
+     * 用户查询生词，relationship>0且小于3
+     * @return
+     */
+	@SuppressWarnings("unchecked")
+	@GetMapping("/getNotebook")
+    @ResponseBody
+    public Result<Word> getNotebook(HttpServletRequest req
+    		,@RequestParam(value="page", required=false,defaultValue="1") Integer page
+    		,@RequestParam(value="limit", required=false,defaultValue="10") Integer limit){
+		Integer user_id = ((User)req.getSession().getAttribute("user")).getUserId();
+		JSONArray wordJson = wordService.queryNotebook(page,limit,user_id);
+    	logger.info(ResultUtil.success(wordJson).toString());
+		return ResultUtil.success(wordJson,wordService.getNotebookSize(page,limit,user_id));
+    }
+	
+//	/**
+//	 * 用户查看单词详情
+//	 * @param model
+//	 * @return
+//	 */
+//	@PostMapping("/queryDetailByIdUser")
+//	@ResponseBody
+//    public JSONObject queryDetailByIdUser(Model model, Word word) {
+//    	logger.info(word.toString());
+//		model.addAttribute("word", userController.getUserInfo());
+//		return JSONObject.fromObject(word);
+//    }
 	
 //	@GetMapping("/updateWordAndExample")
 //	public String updateWordAndExample(@Valid Word word,Model model){

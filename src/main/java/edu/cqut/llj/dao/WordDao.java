@@ -151,6 +151,27 @@ public class WordDao {
 		wordAndUserMapper.updateByPrimaryKey(wu);
 		return true;
 	}
+	
+	/**
+	 * 用户查询已学会单词
+	 * @param page
+	 * @param limit
+	 * @return
+	 */
+	public List<Word> queryMyWord(Integer page, Integer limit, Integer user_id){
+		return wordMapper.queryMyWord((page-1)*limit,limit,user_id);
+	}
+
+	/**
+	 * 用户查询生词
+	 * @param page
+	 * @param limit
+	 * @param user_id
+	 * @return
+	 */
+	public List<Word> queryNotebook(Integer page, Integer limit, Integer user_id) {
+		return wordMapper.queryNotebook((page-1)*limit,limit,user_id);
+	}
 
 	/**
 	 * 更新例句

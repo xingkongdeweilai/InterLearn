@@ -32,6 +32,7 @@ public class Word {
     private String word_example_en3;
 
     private String wordname;
+	private Integer status;
 
 	public Word() {
 	}
@@ -42,8 +43,6 @@ public class Word {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
-	private Integer status;
 
 
 	public Integer getWord_id() {

@@ -1,177 +1,211 @@
+<!-- 记单词模块 -->
+
 <script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+
+<div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="demoPro">
+  <div class="layui-progress-bar layui-bg-green" lay-percent="" id="progress"></div>
+</div>
 <div id="root">
-	<div class="layui-card" v-if="show0">
-	  <div class="layui-card-header layui-bg-blue">{{wordname}}</div>
+	<div class="layui-row">
+		<div class="layui-col-md2">
+			<div class="layui-card layui-anim layui-anim-up" v-if="show0">
+			  <div class="layui-card-header layui-bg-gray">{{wordname}}</div>
+			</div>
+		</div>
+		<div class="layui-col-md5">
+			<div class="layui-card layui-anim layui-anim-up" v-if="show1">
+			  <div class="layui-card-body layui-bg-gray">
+				   描述: {{word_describe}}
+			  </div>
+			</div>
+		</div>
+		<div class="layui-col-md5">
+			<div class="layui-card layui-anim layui-anim-up" v-if="show2">
+			  <div class="layui-card-body layui-bg-gray">
+				   翻译: {{word_translate}}
+			  </div>
+			</div>	
+		</div>
 	</div>
-	<div class="layui-card" v-if="show1">
-	  <div class="layui-card-header layui-bg-green">描述</div>
-	  <div class="layui-card-body layui-bg-gray">
-		    {{word_describe}}
-	  </div>
+	<div class="layui-anim layui-anim-up" v-if="show3">
+		<div class="layui-card">
+		  <h2 class="layui-card-header layui-bg-blue">{{word_example_en1}}</h2>
+		  <div class="layui-card-body layui-bg-gray">
+				{{word_example_cn1}}
+		  </div>
+		 </div>
+		<div class="layui-card">
+		  <div class="layui-card-header layui-bg-blue">{{word_example_en2}}</div>
+		  <div class="layui-card-body layui-bg-gray">
+				{{word_example_cn2}}
+		  </div>
+		</div>
+		<div class="layui-card">
+		  <div class="layui-card-header layui-bg-blue">{{word_example_en3}}</div>
+		  <div class="layui-card-body layui-bg-gray">
+				{{word_example_cn3}}
+		  </div>
+		</div>
 	</div>
-	<div class="layui-card" v-if="show2">
-	  <div class="layui-card-header layui-bg-green">翻译</div>
-	  <div class="layui-card-body layui-bg-gray">
-		    {{word_translate}}
-	  </div>
-	</div>
-	<div class="layui-card" v-if="show3">
-	  <div class="layui-card-header layui-bg-green">{{word_example_en1}}</div>
-	  <div class="layui-card-body layui-bg-gray">
-			{{word_example_cn1}}
-	  </div>
-	</div>
-	<div class="layui-card" v-if="show3">
-	  <div class="layui-card-header layui-bg-green">{{word_example_en2}}</div>
-	  <div class="layui-card-body layui-bg-gray">
-			{{word_example_cn2}}
-	  </div>
-	</div>
-	<div class="layui-card" v-if="show3">
-	  <div class="layui-card-header layui-bg-green">{{word_example_en3}}</div>
-	  <div class="layui-card-body layui-bg-gray">
-			{{word_example_cn3}}
-	  </div>
-	</div>
-	<button @click="change" id="aaa">不认识</button>
-	<button @click="bigChange" id="bbb">认识</button>
+	<input @click="change" id="detail" class="layui-btn layui-btn-normal" type="button" value="点击查看单词"/>
+	<input @click="bigChange" id="nextWord" class="layui-btn layui-btn-normal" type="hidden" value="所有信息"/>
 </div>
 <script type="text/javascript">
-	var todayWordList;
-	//预加载每日单词
+	//预加载进度条
 	$(function(){
-		$.ajax({
-			type:"get",
-			url:"/interLearn/word/getRememberWord",
-			success:function(data){
-				console.log(data);
-				todayWordList = data.data.todayWordList;
-			}
-		});
+		$('#progress').attr('lay-percent',1+'/'+todayWordList.length);
 	});
 	
 	
-	layui.use(['element','util'], function(){
+	layui.use(['element','util','layer'], function(){
 	  var element = layui.element
-	  ,util = layui.util;
+	  ,util = layui.util
+	  ,layer = layui.layer;
 	  
+	  /* //固定工具栏
 	  util.fixbar({
 	    bar1: '&#xe625;'
 	    ,bar2: '&#xe623;'
 	    ,click: function(type){
 	      if(type === 'bar1'){
-	      	$('#aaa').click();
+	      	$('#detail').click();
 	      }else if(type='bar2'){
-	    	$('#bbb').click();
+	    	$('#nextWord').click();
 	      }
 	    }
 	    ,css:{bottom:350}
-	  });
-	});
-	
-	new Vue({
-		el:"#root",
-		data:{
-			flag3:3,
-			flag2:2,
-			flag1:1,
-			flag0:0,
-			flag:-1,
-			/* 第几个单词  */
-			index:0
-		},
-		methods:{
-			change:function(){
-				if(this.flag<3){
-					this.flag++;
-				}else{
-					$('#bbb').click();
-				}
+	  }); */
+	  
+	  new Vue({
+			el:"#root",
+			data:{
+				flag3:3,
+				flag2:2,
+				flag1:1,
+				flag0:0,
+				flag:-1,
+				/* 第几个单词  */
+				index:0
 			},
-			bigChange:function(){
-				if(this.flag<3){
-					this.flag=3;
-				}else{
-					$.ajax({
-						type:"get",
-						url:"/interLearn/word/updateWordUserRelation",
-						data:this.currentWord
-					});
-					if(this.index<this.todayWordList.length-1){
-						this.flag=-1;
-						this.index++;
+			methods:{
+				change:function(){
+					if(this.flag<3){
+						this.flag++;
 					}else{
-						alert("恭喜，今日单词已学完");
+						$('#nextWord').click();
+					}
+				},
+				bigChange:function(){
+					if(this.flag<3){
+						this.flag=3;
+					}else{
+						$.ajax({
+							type:"get",
+							url:"/interLearn/word/updateWordUserRelation",
+							data:this.currentWord,
+						});
+						//不是最后一个单词就换下一个单词
+						if(this.index<this.todayWordList.length-1){
+							this.flag=-1;
+							this.index++;
+							changePro(this.index+1,todayWordList.length,element);
+							/* $('#progress').attr('lay-percent',(this.index+1)+'/'+todayWordList.length);
+						 	element.progress('demoPro',(this.index+1)+'/'+todayWordList.length); */
+						}else{
+							alert("今日单词已学完，前往自测系统检测一下吧");
+						}
 					}
 				}
+			},
+			computed:{
+				show3:function(){
+					return this.flag>=this.flag3;
+				},
+				show2:function(){
+					return this.flag>=this.flag2;
+				},
+				show1:function(){
+					return this.flag>=this.flag1;
+				},
+				show0:function(){
+					if(this.flag == 0){
+						$('#detail').val('给点提示');
+						$('#nextWord').attr('type','button');
+					}
+					if(this.flag == -1){
+						$('#detail').val('点击查看单词');
+						$('#nextWord').attr('type','hidden');
+					}
+					if(this.flag==3){
+						$('#detail').val('nice,下一个单词');
+						$('#nextWord').attr('type','hidden');
+					}
+					return this.flag>=this.flag0;
+				},
+				/* 今日单词列表 */
+				todayWordList:function(){
+					return todayWordList;
+				},
+				/* 当前学习的单词 */
+				currentWord:function(){
+					return this.todayWordList[this.index];
+				},
+				wordname:function(){
+					return this.currentWord.wordname;
+				},
+				word_describe:function(){
+					return this.currentWord.word_describe;
+				},
+				word_translate:function(){
+					return this.currentWord.word_translate;
+				},
+				word_example_en1:function(){
+					var result = this.currentWord.word_example_en1;
+					return resolveEmptyEn(result);
+				},
+				word_example_cn1:function(){
+					var result = this.currentWord.word_example_cn1;
+					return resolveEmptyCn(result);
+				},
+				word_example_en2:function(){
+					var result = this.currentWord.word_example_en2;
+					return resolveEmptyEn(result);
+				},
+				word_example_cn2:function(){
+					var result = this.currentWord.word_example_cn2;
+					return resolveEmptyCn(result);
+				},
+				word_example_en3:function(){
+					var result = this.currentWord.word_example_en3;
+					return resolveEmptyEn(result);
+				},
+				word_example_cn3:function(){
+					var result = this.currentWord.word_example_cn3;
+					return resolveEmptyCn(result);
+				}
 			}
-		},
-		computed:{
-			show3:function(){
-				return this.flag>=this.flag3;
-			},
-			show2:function(){
-				return this.flag>=this.flag2;
-			},
-			show1:function(){
-				return this.flag>=this.flag1;
-			},
-			show0:function(){
-				return this.flag>=this.flag0;
-			},
-			/* 今日单词列表 */
-			todayWordList:function(){
-				return todayWordList;
-			},
-			/* 当前学习的单词 */
-			currentWord:function(){
-				return this.todayWordList[this.index];
-			},
-			wordname:function(){
-				return this.currentWord.wordname;
-			},
-			word_describe:function(){
-				return this.currentWord.word_describe;
-			},
-			word_translate:function(){
-				return this.currentWord.word_translate;
-			},
-			word_example_en1:function(){
-				var result = this.currentWord.word_example_en1;
-				return resolveEmptyEn(result);
-			},
-			word_example_cn1:function(){
-				var result = this.currentWord.word_example_cn1;
-				return resolveEmptyCn(result);
-			},
-			word_example_en2:function(){
-				var result = this.currentWord.word_example_en2;
-				return resolveEmptyEn(result);
-			},
-			word_example_cn2:function(){
-				var result = this.currentWord.word_example_cn2;
-				return resolveEmptyCn(result);
-			},
-			word_example_en3:function(){
-				var result = this.currentWord.word_example_en3;
-				return resolveEmptyEn(result);
-			},
-			word_example_cn3:function(){
-				var result = this.currentWord.word_example_cn3;
-				return resolveEmptyCn(result);
-			}
-		}
-//		watch:{
-//			fullName:function(){
-//				this.flag++;
+//			watch:{
+//				fullName:function(){
+//					this.flag++;
+//				}
 //			}
-//		}
+		});
+	  
+
+	  element.init(); 
 	});
 	
+	
+	
 	function resolveEmptyEn(result){
-		return result==''?'Yingyingying,the administrator is lazy, so there is no content here':result
+		return result==''?'the administrator is lazy, so there is no content here':result
 	}
 	function resolveEmptyCn(result){
-		return result==''?'嘤嘤嘤，管理员偷懒了，所以这里没有内容':result
+		return result==''?'管理员偷懒了，所以这里没有内容':result
+	}
+	/* 改变进度条 */
+	function changePro(whichOne,lengthOfWord,element){
+		$('#progress').attr('lay-percent',whichOne+'/'+lengthOfWord);
+		element.progress('demoPro',whichOne+'/'+lengthOfWord);
 	}
 </script>

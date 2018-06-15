@@ -39,7 +39,7 @@ public class HttpAspect {
 		//登录账户
 		try {
 			logger.info(req.getSession().getAttribute("user").toString());
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			throw new GirlException(ResultEnum.USER_LOGIN_NULL);
 		}
 		

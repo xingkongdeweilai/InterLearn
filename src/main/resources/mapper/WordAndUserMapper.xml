@@ -10,4 +10,40 @@
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="word_id" property="wordId" jdbcType="INTEGER" />
   </resultMap>
+  
+  <!-- 查询排行榜 -->
+  <select id="getRank" resultType="edu.cqut.llj.vo.Rank">
+  	SELECT
+		t.user_id,t.number,u.e_mail,u.mobile,u.sex,u.username
+	FROM
+		(
+			SELECT
+				user_id,
+				count(*) AS number
+			FROM
+				word_and_user
+			GROUP BY
+				user_id
+		) AS t
+	JOIN `user` u ON t.user_id = u.user_id
+	ORDER BY number desc
+	LIMIT #{limit0},#{limit1}
+  </select>
+  
+  <select id="getRankSize" resultType="java.lang.Integer">
+  	SELECT
+		count(*)
+	FROM
+		(
+			SELECT
+				user_id,
+				count(*) AS number
+			FROM
+				word_and_user
+			GROUP BY
+				user_id
+		) AS t
+	JOIN `user` u ON t.user_id = u.user_id
+	ORDER BY number desc
+  </select>
 </mapper>

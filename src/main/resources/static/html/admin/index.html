@@ -22,7 +22,7 @@
 
 			<ul class="mdui-list app-slide-menu app-collapse-menu" mdui-collapse="{accordion: true}">
 			   <li class="mdui-list-item mdui-ripple app-list-home ">
-				   <a href="#" class="app-list-item-link mdui-text-left ">
+				   <a href="javascript:toHome();" class="app-list-item-link mdui-text-left ">
 					   <div class="mdui-list-item-content">
 							<i class="mdui-list-item-icon mdui-icon material-icons">
 						   &#xe88a;
@@ -30,7 +30,7 @@
 					   </div>
 				   </a>
 			   </li>
-				<li class="mdui-collapse-item  app-hide-list  app-collapse-list" v-if="show">
+				<!-- <li class="mdui-collapse-item  app-hide-list  app-collapse-list" v-if="show">
 					<div class="mdui-collapse-item-header mdui-list-item mdui-ripple  mdui-p-x-0">
 						<div class="menu-click mdui-list-item-content mdui-text-left" onClick="">
 							管理员管理
@@ -54,7 +54,7 @@
 				</li>
 				<li class="mdui-collapse-item  app-hide-list  app-collapse-list">
 					<div class="mdui-collapse-item-header mdui-list-item mdui-ripple  mdui-p-x-0">
-						<div class="menu-click mdui-list-item-content mdui-text-left" onClick="">
+						<div class="menu-click mdui-list-item-content mdui-text-left" onClick="toWordList()">
 							单词管理
 							<i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-float-right">
 								&#xe5cc;
@@ -83,11 +83,41 @@
 							</a>
 						</li>
 					</ul>
+				</li> -->
+				<li class="mdui-collapse-item app-hide-list  app-collapse-list">
+				   <a href="javascript:toAnnoList()" class=" mdui-list-item mdui-ripple  mdui-p-x-0">
+						<div class="menu-click mdui-list-item-content mdui-text-left">
+							题目管理 
+							<i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-float-right">
+								&#xe5cc;
+							</i>
+						</div>
+					</a>
 				</li>
 				<li class="mdui-collapse-item app-hide-list  app-collapse-list">
-				   <a href="#" class=" mdui-list-item mdui-ripple  mdui-p-x-0">
+				   <a href="javascript:toWordList();" class=" mdui-list-item mdui-ripple  mdui-p-x-0">
 						<div class="menu-click mdui-list-item-content mdui-text-left">
-							一级栏目 
+							单词管理 
+							<i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-float-right">
+								&#xe5cc;
+							</i>
+						</div>
+					</a>
+				</li>
+				<li class="mdui-collapse-item app-hide-list  app-collapse-list">
+				   <a href="javascript:toAnnoList()" class=" mdui-list-item mdui-ripple  mdui-p-x-0">
+						<div class="menu-click mdui-list-item-content mdui-text-left">
+							用户管理
+							<i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-float-right">
+								&#xe5cc;
+							</i>
+						</div>
+					</a>
+				</li>
+				<li class="mdui-collapse-item app-hide-list  app-collapse-list">
+				   <a href="javascript:toAnnoList()" class=" mdui-list-item mdui-ripple  mdui-p-x-0">
+						<div class="menu-click mdui-list-item-content mdui-text-left">
+							公告管理
 							<i class="mdui-collapse-item-arrow mdui-icon material-icons mdui-float-right">
 								&#xe5cc;
 							</i>
@@ -117,6 +147,16 @@
 	function toWordList(){
 		$('iframe').attr("src","../word/toWordList");
 	}
+	function toAnnoList(){
+		$('iframe').attr("src","../anno/toAnnoList");
+	}
+	function toHome(){
+		$('iframe').attr("src","../common/toHome");
+	}
+	
+	$(function(){
+		toHome();
+	});
 </script>
 
 </body>

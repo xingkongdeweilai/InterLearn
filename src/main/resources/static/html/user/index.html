@@ -1,9 +1,11 @@
+<!-- 前台系统主体框架 -->
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-  <title>layout 后台大布局 - Layui</title>
+  <title>星空英语学习系统</title>
   <link rel="stylesheet" type="text/css" href="../layui/css/layui.css"/>
 </head>
 <body class="layui-layout-body">
@@ -43,7 +45,7 @@
     <div class="layui-side-scroll">
     <!--   左侧导航区域（可配合layui已有的垂直导航） -->
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-        <li class="layui-nav-item"><a href="">首页</a></li>
+        <li class="layui-nav-item"><a href="javascript:toHtml('home');">首页</a></li>
         <li class="layui-nav-item layui-nav-itemed">
           <a href="javascript:toHtml('rememberWord');">每日单词</a>
          <!--  <dl class="layui-nav-child">
@@ -54,44 +56,127 @@
           </dl> -->
         </li>
         <li class="layui-nav-item">
-          <a href="javascript:;">自测系统</a>
+          <a href="javascript:toHtml('practise');">自测系统</a>
           <!-- <dl class="layui-nav-child">
             <dd><a href="javascript:;">列表一</a></dd>
             <dd><a href="javascript:;">列表二</a></dd>
             <dd><a href="">超链接</a></dd>
           </dl> -->
         </li>
-        <li class="layui-nav-item"><a href="">排行榜</a></li>
-        <li class="layui-nav-item"><a href="">系统公告</a></li>
+        <li class="layui-nav-item"><a href="javascript:toHtml('rank');">排行榜</a></li>
+        <li class="layui-nav-item"><a href="javascript:toHtml('anno');">系统公告</a></li>
       </ul>
     </div>
   </div>
   
   <div class="layui-body">
     <!-- 内容主体区域 -->
-    <div style="padding: 15px;" id="body">哈哈哈哈哈，就是这么强大</div>
+    <div style="padding: 15px;" id="body"></div>
   </div>
   
   <div class="layui-footer">
     <!-- 底部固定区域 -->
-    © layui.com - 底部固定区域
+    <!-- © layui.com - 底部固定区域 -->
   </div>
 </div>
 <script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script src="../js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
 <script>
-
-function toHtml(d){
-	switch (d){
-		case 'rememberWord':
-			$.get('/interLearn/html/user/body.html',function(data){
-				$('#body').html(data);
+	var todayWordList,todayPracList;
+	$(function(){
+		toHtml('home');
+		
+		//预加载每日单词以及进度条
+		$(function(){
+			$.ajax({
+				type:"get",
+				url:"/interLearn/word/getRememberWord",
+				success:function(data){
+					console.log(data);
+					todayWordList = data.data.todayWordList;
+					//初始填充进度条
+					$('#progress').attr('lay-percent',1+'/'+todayWordList.length);
+				}
 			});
-			break;
-		default:
-			break;
+		});
+	});
+	
+	function toHtml(d,d1){
+		switch (d){
+			case 'rememberWord':
+				$.get('/interLearn/html/user/body.html',function(data){
+					$('#body').html(data);
+				});
+				break;
+			case 'anno':
+				$.get('/interLearn/html/user/anno.html',function(data){
+					$('#body').html(data);
+				});
+				break;
+			case 'rank':
+				$.get('/interLearn/html/user/rank.html',function(data){
+					$('#body').html(data);
+				});
+				break;
+			case 'home':
+				$.get('/interLearn/html/user/home.html',function(data){
+					$('#body').html(data);
+				});
+				break;
+			case 'myWord':
+				$.get('/interLearn/html/user/myWord.html',function(data){
+					$('#wordList').html(data);
+				});
+				break;
+			case 'wordDetail':
+				$.get('/interLearn/html/user/wordDetail.html',function(data){
+					$('#wordList').html(data);
+					layui.use(['form', 'layedit', 'laydate', 'layer'], function(){
+						form = layui.form;
+						layer = layui.layer;
+						var layedit = layui.layedit
+						,laydate = layui.laydate;
+						//表单初始赋值
+						form.val('example', {
+							"word_translate": d1.word_translate
+							,"word_describe": d1.word_describe
+							,"word_example_en1": d1.word_example_en1
+							,"word_example_cn1": d1.word_example_cn1
+							,"word_example_en2": d1.word_example_en2
+							,"word_example_cn2": d1.word_example_cn2
+							,"word_example_en3": d1.word_example_en3
+							,"word_example_cn3": d1.word_example_cn3
+							,"word_id":d1.word_id
+							,"wordname":d1.wordname
+						});
+					});					
+				});
+				break;
+			case 'notebook':
+				$.get('/interLearn/html/user/notebook.html',function(data){
+					$('#wordList').html(data);
+				});
+				break;
+			case 'practise':
+				$.ajax({
+					type:'get',
+					url:'/interLearn/practise/getPractiseList',
+					data:{jsonArray:JSON.stringify(todayWordList)},
+					contentType : "application/json;charsetset=UTF-8",
+					dataType:"json",
+					success:function(data){
+						todayPracList = data;
+						console.log(todayPracList);
+					}
+				});
+				$.get('/interLearn/html/user/practise.html',function(data){
+					$('#body').html(data);
+				});
+				break;
+			default:
+				break;
+		}
 	}
-}
 </script>
 </body>
 </html>

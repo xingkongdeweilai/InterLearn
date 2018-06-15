@@ -49,4 +49,8 @@ public class UserDao {
 		return null;
 	}
 	
+	public String getNameById(Integer id){
+		User user = userRepository.findByUserId(id);
+		return user.getUsername();
+	}
 }

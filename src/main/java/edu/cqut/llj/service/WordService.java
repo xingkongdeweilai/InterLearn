@@ -17,8 +17,6 @@ import edu.cqut.llj.pojo.Word;
 import edu.cqut.llj.pojo.WordAndUser;
 import edu.cqut.llj.properties.WordProperties;
 import edu.cqut.llj.utils.CommonUtil;
-import edu.cqut.llj.vo.ThreeWordExample;
-import edu.cqut.llj.vo.WordAndWordExample;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import tk.mybatis.mapper.entity.Example;
@@ -108,21 +106,46 @@ public class WordService {
 	}
 
 	/**
-	 * 返回每日单词，三个查询方案
+	 * 返回每日单词，两个查询方案
 	 * 1、在word_and_user查询1/2，查询条件：relation<3，即正在学习中的词
-	 * 2、在word中查询，查询量补齐，查询条件：在word_and_user中relation<3
+	 * 2、在word中查询，查询量补齐
 	 * @param user_id
 	 * @param lastWordList 
 	 * @return
 	 */
-	public JSONObject getRememberWord(Integer user_id, JSONObject lastWordList) {
-		//判断今天是否已经获取过当日单词，是:直接返回上次的json,否则请求新的json
-		if(lastWordList!=null
-				&&lastWordList.get("getNow")!=null
-				&&lastWordList.get("getNow").toString().equals(CommonUtil.getNow())){
-			return lastWordList;
+	public JSONObject getRememberWord(Integer user_id) {
+		//存入redis中的key，用来作为存取redis的键
+		String key = user_id.toString()+"_"+CommonUtil.getNow();
+		//每日单词打包对象
+		JSONObject resultJson = new JSONObject();
+		
+		//通过查询redis来判断今天是否已经获取过当日单词，是:直接返回上次的json,否则请求新的json
+		byte[] byt = CommonUtil.getJedis().get(key.getBytes());
+		if(byt!=null){
+			Object obj = CommonUtil.unserizlize(byt);
+			JSONArray jsonArray = null;
+			if(obj instanceof JSONArray){
+				jsonArray = (JSONArray) obj;
+				logger.info("redis中每日单词："+ jsonArray);
+			}
+			if(jsonArray!=null){
+				resultJson.put("todayWordList", jsonArray);
+				resultJson.put("getNow", key.split("_")[1]);
+				resultJson.put("user_id", key.split("_")[0]);
+				logger.info("resultJson:"+resultJson.toString());
+				return resultJson;
+			}
 		}
 		
+//		if(lastWordList!=null
+//				&&lastWordList.get("getNow")!=null
+//				&&lastWordList.get("user_id")!=null
+//				&&lastWordList.get("getNow").toString().equals(CommonUtil.getNow())
+//				&&user_id==Integer.valueOf(lastWordList.get("user_id").toString())){
+//			return lastWordList;
+//		}
+		
+		//从数据库取每日单词并将每日单词打包成json数组
 		Integer size1 = 0;
 		List<Word> plan1 = new ArrayList<>();
 		List<Word> plan2 = new ArrayList<>();
@@ -130,13 +153,15 @@ public class WordService {
 		plan1 = wordDao.queryLearningWord(user_id,wordNumber/2);
 		size1 = plan1.size();
 		plan2 = wordDao.queryNewWord(wordNumber-size1);
-		
 		plan1.addAll(plan2);
 		JSONArray todayWordList = JSONArray.fromObject(plan1);
-		JSONObject resultJson = new JSONObject();
+		
+		//以“user_id_getNow”为键，每日单词json为值存入redis中
+		CommonUtil.getJedis().set(key.getBytes(), CommonUtil.serialize(todayWordList));
 		resultJson.put("todayWordList", todayWordList);
 		resultJson.put("getNow", CommonUtil.getNow());
-		logger.info(resultJson.toString());
+		resultJson.put("user_id", user_id);
+		logger.info("key:"+key);
 		return resultJson;
 	}
 
@@ -166,6 +191,50 @@ public class WordService {
 			wordDao.updateWordUserRelation(wu);
 		}
 		return true;
+	}
+
+	/**
+	 * 用户查询已学会单词
+	 * @param word
+	 * @param page
+	 * @param limit
+	 * @param user_id 
+	 * @return
+	 */
+	public JSONArray queryMyWord(Integer page, Integer limit, Integer user_id) {
+		List<Word> myWordList = wordDao.queryMyWord(page, limit, user_id);
+		return JSONArray.fromObject(myWordList);
+	}
+
+	/**
+	 * 得到用户的已学会单词长度
+	 * @return
+	 */
+	public Integer getMyWordListSize(Integer page,Integer limit,Integer user_id) {
+		return this.queryMyWord(page, limit, user_id).size();
+	}
+
+	/**
+	 * 用户查询生词
+	 * @param page
+	 * @param limit
+	 * @param user_id
+	 * @return
+	 */
+	public JSONArray queryNotebook(Integer page, Integer limit, Integer user_id) {
+		List<Word> myWordList = wordDao.queryNotebook(page, limit, user_id);
+		return JSONArray.fromObject(myWordList);
+	}
+
+	/**
+	 * 得到生词长度
+	 * @param page
+	 * @param limit
+	 * @param user_id
+	 * @return
+	 */
+	public Integer getNotebookSize(Integer page, Integer limit, Integer user_id) {
+		return this.queryNotebook(page, limit, user_id).size();
 	}
 	
 //	public ThreeWordExample updateWordExample(String cn,String en, Integer word_id) {
